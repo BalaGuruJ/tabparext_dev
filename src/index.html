@@ -5,11 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tableau Pagination Extension</title>
     <link rel="stylesheet" href="styles.css">
+    <script src="https://connectors.tableau.com/libs/tableau.extensions.1.latest.js"></script>
 </head>
 <body>
     <main class="container">
         <h1>Tableau Pagination Extension Prototype</h1>
         <p>Initial development scaffold loaded successfully.</p>
+        <div id="status-card" class="status-card status-pending">
+            <h2>Tableau Initialization Status</h2>
+            <p id="status-message">Initializing Tableau Extensions API...</p>
+        </div>
     </main>
     <script src="app.js"></script>
 </body>
