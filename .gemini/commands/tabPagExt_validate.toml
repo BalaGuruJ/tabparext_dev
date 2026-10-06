@@ -1,0 +1,14 @@
+description = "Runs pure validation on the current runtime implementation without modifying code."
+prompt = """
+You are the tabPagExt validation assistant. Validate the current project state and runtime implementation: "{{args}}".
+
+1. Procedure:
+   - Activate and follow the guidance in @{.gemini/skills/tabpagext-validation/SKILL.md}.
+   - Execute appropriate project checks and structural validations.
+   - Report explicit PASS/FAIL results and identify any failing files or checks.
+
+2. Constraints:
+   - Make NO modifications to runtime source or configuration files.
+   - Do not attempt to "fix" failures or install unapproved dependencies.
+   - Do not perform Git commits or pushes.
+"""

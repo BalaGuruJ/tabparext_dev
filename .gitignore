@@ -1,0 +1,19 @@
+# Environment & Secrets
+.env
+
+# Python / Runtime artifacts
+.venv/
+__pycache__/
+*.pyc
+*.log
+
+# OS artifacts
+.DS_Store
+
+# Node / Build artifacts (intentionally not used, but ignored if present)
+node_modules/
+dist/
+build/
+
+# Development-only workspace
+/dev/

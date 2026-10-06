@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest manifest-version="0.1" xmlns="http://www.tableau.com/xml/extension_manifest">
+  <dashboard-extension id="com.example.pagination" extension-version="1.0.0">
+    <default-locale>en_US</default-locale>
+    <name resource-id="name"/>
+    <description>Tableau Pagination Extension Prototype</description>
+    <author name="Developer" email="developer@example.com" organization="Example" website="https://www.example.com"/>
+    <min-api-version>1.0.0</min-api-version>
+    <source-location>
+      <!-- TODO: Finalize URL during the first Tableau Desktop test (e.g., http://localhost:8765/) -->
+      <url>http://localhost:8765/</url>
+    </source-location>
+    <icon></icon>
+    <permissions>
+      <permission>full data</permission>
+    </permissions>
+  </dashboard-extension>
+  <resources>
+    <resource id="name">
+      <text locale="en_US">Tableau Pagination Extension</text>
+    </resource>
+  </resources>
+</manifest>

@@ -1,0 +1,16 @@
+description = "Runs a bounded, read-only repository investigation using the tabpagext-investigation skill."
+prompt = """
+You are the tabPagExt investigation assistant. Authoritatively inspect the requested scope: "{{args}}".
+
+1. Procedure:
+   - Activate and follow the guidance in @{.gemini/skills/tabpagext-investigation/SKILL.md}.
+   - Inspect existing files, runtime source (`src/`, `extension/`), and development governance (`dev/`).
+   - Distinguish empirical facts from assumptions.
+   - Report findings clearly without modifying any files.
+
+2. Constraints:
+   - Make NO code changes.
+   - Do not modify runtime or governance files.
+   - Do not manufacture defects.
+   - Recommend implementation tasks only if strongly supported by evidence.
+"""
