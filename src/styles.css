@@ -7,7 +7,7 @@ body {
 }
 
 .container {
-    max-width: 600px;
+    max-width: 800px;
     margin: 0 auto;
     background: #ffffff;
     padding: 24px;
@@ -36,7 +36,7 @@ h1 {
 }
 
 .status-card p {
-    margin: 0;
+    margin: 0 0 8px 0;
     font-size: 0.95rem;
 }
 
@@ -70,4 +70,45 @@ h1 {
     font-size: 0.95rem;
     font-weight: 500;
     color: #202124;
+}
+
+.data-summary h3 {
+    font-size: 1rem;
+    margin-top: 16px;
+    margin-bottom: 8px;
+    color: #202124;
+}
+
+.table-container {
+    max-height: 200px;
+    overflow-y: auto;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    background: #fff;
+    margin-bottom: 12px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.85rem;
+}
+
+th, td {
+    padding: 8px 12px;
+    text-align: left;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+th {
+    background-color: #f8f9fa;
+    font-weight: 600;
+    color: #3c4043;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
+tr:hover {
+    background-color: #f8f9fa;
 }
