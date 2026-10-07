@@ -68,7 +68,10 @@ export const Extractor = {
             columns: (dataTable.columns || []).map(col => ({
                 fieldName: col.fieldName,
                 dataType: col.dataType,
-                name: col.name
+                name: col.name,
+                fieldId: col.fieldId !== undefined ? col.fieldId : null,
+                index: col.index !== undefined ? col.index : null,
+                isReferenced: col.isReferenced !== undefined ? col.isReferenced : null
             })),
             totalRowCount: dataTable.totalRowCount !== undefined ? dataTable.totalRowCount : (dataTable.data ? dataTable.data.length : 0),
             data: (dataTable.data || []).map(row => row.map(cell => {

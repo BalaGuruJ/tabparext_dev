@@ -1,8 +1,15 @@
 /**
  * Tableau Pagination Extension - App Entry Point
  * Phase 02 Task 02.03: Worksheet Data Retrieval
+ * Phase 03 Task: Evidence Collector Runtime Integration
  */
 import { Extractor } from "./tableau/extractor.js";
+import { EvidenceCollector } from "./tableau/evidence_collector.js";
+
+// Expose EvidenceCollector on window for runtime testing and validation access
+if (typeof window !== "undefined") {
+    window.EvidenceCollector = EvidenceCollector;
+}
 
 document.addEventListener("DOMContentLoaded", () => {
     const statusCard = document.getElementById("status-card");
@@ -134,6 +141,14 @@ document.addEventListener("DOMContentLoaded", () => {
                         worksheetNames
                     );
 
+                    // Phase 03 Evidence Capture: Dashboard Objects & Zones (Q2)
+                    let dashboardEvidence = null;
+                    try {
+                        dashboardEvidence = await EvidenceCollector.captureDashboardEvidence(dashboard);
+                    } catch (evDashErr) {
+                        console.warn("[Phase 03 Evidence] Error capturing dashboard evidence:", evDashErr);
+                    }
+
                     if (worksheetObjects.length > 0) {
                         const targetWorksheet = worksheetObjects[0];
                         updateDataRetrieval("pending", `Retrieving summary data from worksheet "${targetWorksheet.name}"...`);
@@ -145,6 +160,25 @@ document.addEventListener("DOMContentLoaded", () => {
                                 `Successfully retrieved summary data from worksheet "${targetWorksheet.name}".`,
                                 retrievalResult
                             );
+
+                            // Phase 03 Evidence Capture: Worksheet Evaluated DataTable Schema (Q1) & Shelves
+                            let worksheetEvidence = null;
+                            try {
+                                worksheetEvidence = await EvidenceCollector.captureWorksheetEvidence(targetWorksheet);
+                            } catch (evWsErr) {
+                                console.warn("[Phase 03 Evidence] Error capturing worksheet evidence:", evWsErr);
+                            }
+
+                            if (typeof window !== "undefined") {
+                                window.__tabPagExtEvidence = {
+                                    dashboard: dashboardEvidence,
+                                    worksheet: worksheetEvidence
+                                };
+                            }
+                            console.log("[Phase 03 Evidence] Collected runtime evidence:", {
+                                dashboard: dashboardEvidence,
+                                worksheet: worksheetEvidence
+                            });
                         } catch (extractErr) {
                             const extractErrMsg = extractErr && extractErr.message ? extractErr.message : String(extractErr);
                             updateDataRetrieval("error", `Failed to retrieve data from worksheet "${targetWorksheet.name}": ${extractErrMsg}`);
