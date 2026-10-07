@@ -179,6 +179,15 @@ document.addEventListener("DOMContentLoaded", () => {
                                 dashboard: dashboardEvidence,
                                 worksheet: worksheetEvidence
                             });
+
+                            try {
+                                await EvidenceCollector.exportEvidence({
+                                    dashboard: dashboardEvidence,
+                                    worksheet: worksheetEvidence
+                                }, 'phase03_evidence.json');
+                            } catch (exportErr) {
+                                console.error("[Phase 03 Evidence] Error exporting evidence:", exportErr);
+                            }
                         } catch (extractErr) {
                             const extractErrMsg = extractErr && extractErr.message ? extractErr.message : String(extractErr);
                             updateDataRetrieval("error", `Failed to retrieve data from worksheet "${targetWorksheet.name}": ${extractErrMsg}`);
