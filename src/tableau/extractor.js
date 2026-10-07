@@ -64,9 +64,23 @@ export const Extractor = {
 
         return {
             methodUsed,
-            columns: dataTable.columns || [],
+            worksheetName: worksheet.name,
+            columns: (dataTable.columns || []).map(col => ({
+                fieldName: col.fieldName,
+                dataType: col.dataType,
+                name: col.name
+            })),
             totalRowCount: dataTable.totalRowCount !== undefined ? dataTable.totalRowCount : (dataTable.data ? dataTable.data.length : 0),
-            data: dataTable.data || []
+            data: (dataTable.data || []).map(row => row.map(cell => {
+                if (cell === null || cell === undefined) return { value: null, formattedValue: "" };
+                if (typeof cell === "object") {
+                    return {
+                        value: cell.value !== undefined ? cell.value : null,
+                        formattedValue: cell.formattedValue !== undefined ? cell.formattedValue : (cell.value !== undefined ? String(cell.value) : "")
+                    };
+                }
+                return { value: cell, formattedValue: String(cell) };
+            }))
         };
     }
 };

@@ -83,7 +83,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     const tr = document.createElement("tr");
                     row.forEach(cell => {
                         const td = document.createElement("td");
-                        td.textContent = getCellValue(cell);
+                        td.textContent = cell.formattedValue;
                         tr.appendChild(td);
                     });
                     previewBody.appendChild(tr);
@@ -94,14 +94,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         console.log(`[Data Retrieval] [${state.toUpperCase()}] ${message}`, details);
-    }
-
-    function getCellValue(cell) {
-        if (cell === null || cell === undefined) return "";
-        if (typeof cell === "object") {
-            return cell.formattedValue !== undefined ? cell.formattedValue : (cell.value !== undefined ? cell.value : JSON.stringify(cell));
-        }
-        return String(cell);
     }
 
     function escapeHtml(str) {
