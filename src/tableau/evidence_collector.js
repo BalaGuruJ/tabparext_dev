@@ -101,5 +101,41 @@ export const EvidenceCollector = {
             // Conceptually separate: Worksheet Shelves projection metadata
             summaryColumnsInfo
         };
+    },
+
+    /**
+     * Persists captured runtime evidence as a JSON artifact.
+     * 
+     * @param {Object} evidence - The evidence object to persist
+     * @param {string} filename - The target filename (e.g., 'dashboard_capture.json')
+     */
+    async exportEvidence(evidence, filename) {
+        if (!evidence) {
+            console.warn("[EvidenceCollector] No evidence provided to export.");
+            return;
+        }
+
+        try {
+            // 1. Preserve existing behavior (window/console)
+            if (typeof window !== 'undefined') {
+                window.__tabPagExtEvidence = evidence;
+            }
+            console.log(`[EvidenceCollector] Evidence captured: ${filename}`, evidence);
+
+            // 2. Persist to local validation receiver
+            try {
+                await fetch('http://localhost:8000/capture', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ filename, evidence })
+                });
+                console.log(`[EvidenceCollector] Evidence sent to validation receiver: ${filename}`);
+            } catch (fetchErr) {
+                console.warn("[EvidenceCollector] Validation receiver not reachable, evidence preserved on window only.", fetchErr);
+            }
+            
+        } catch (err) {
+            console.error("[EvidenceCollector] Failed to export evidence:", err);
+        }
     }
 };
