@@ -16,5 +16,3 @@ dist/
 build/
 
 # Development-only workspace
-/dev/
-validation_evidence/

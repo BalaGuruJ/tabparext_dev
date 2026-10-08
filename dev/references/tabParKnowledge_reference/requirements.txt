@@ -1,0 +1,30 @@
+# ============================================================================
+# Tableau Metadata Research Project
+# Requirements
+# Version: 1.0
+# ============================================================================
+
+# Tableau Document API
+tableaudocumentapi
+
+# XML Processing
+lxml
+
+# Pretty console output
+tabulate
+
+# Rich terminal output
+rich
+
+# Progress bars
+tqdm
+
+# Environment variable support
+python-dotenv
+
+# Data exploration / validation
+pandas
+
+# Optional notebook support
+jupyter
+ipykernel

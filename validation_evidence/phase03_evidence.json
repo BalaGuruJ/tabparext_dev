@@ -1,0 +1,121 @@
+{
+  "dashboard": {
+    "dashboardName": "validation",
+    "dashboardSize": {},
+    "objects": [
+      {
+        "id": 3,
+        "name": "test_worksheet",
+        "type": "worksheet",
+        "position": {
+          "x": 8,
+          "y": 8
+        },
+        "size": {
+          "width": 984,
+          "height": 784
+        },
+        "isFloating": false,
+        "isVisible": true,
+        "worksheetName": "test_worksheet"
+      },
+      {
+        "id": 4,
+        "name": "Tiled",
+        "type": "blank",
+        "position": {
+          "x": 0,
+          "y": 0
+        },
+        "size": {
+          "width": 1000,
+          "height": 800
+        },
+        "isFloating": false,
+        "isVisible": true,
+        "worksheetName": null
+      },
+      {
+        "id": 9,
+        "name": "Tableau Pagination Extension",
+        "type": "extension",
+        "position": {
+          "x": 29,
+          "y": 48
+        },
+        "size": {
+          "width": 936,
+          "height": 788
+        },
+        "isFloating": true,
+        "isVisible": true,
+        "worksheetName": null
+      }
+    ]
+  },
+  "worksheet": {
+    "worksheetName": "test_worksheet",
+    "retrievalMethod": "getSummaryDataReaderAsync",
+    "totalRowCount": 1,
+    "dataTableColumns": [
+      {
+        "fieldId": "[federated.0yylszc1nyju5o130dues14408ct].[none:Product:nk]",
+        "fieldName": "Product",
+        "dataType": "string",
+        "index": 0,
+        "isReferenced": true
+      },
+      {
+        "fieldId": "[federated.0yylszc1nyju5o130dues14408ct].[usr:LinPack_563128459934046831:qk]",
+        "fieldName": "AGG(Sales per Store)",
+        "dataType": "float",
+        "index": 1,
+        "isReferenced": true
+      },
+      {
+        "fieldId": "[federated.0yylszc1nyju5o130dues14408ct].[sum:Calculation_1994813213249245187:qk]",
+        "fieldName": "SUM(Calculation1)",
+        "dataType": "float",
+        "index": 2,
+        "isReferenced": true
+      },
+      {
+        "fieldId": "[federated.0yylszc1nyju5o130dues14408ct].[sum:Sales Amount:qk]",
+        "fieldName": "SUM(Sales Amount)",
+        "dataType": "float",
+        "index": 3,
+        "isReferenced": true
+      }
+    ],
+    "summaryColumnsInfo": [
+      {
+        "fieldName": "Product",
+        "fieldId": "[federated.0yylszc1nyju5o130dues14408ct].[none:Product:nk]",
+        "dataType": "string",
+        "index": 0,
+        "isReferenced": true
+      },
+      {
+        "fieldName": "AGG(Sales per Store)",
+        "fieldId": "[federated.0yylszc1nyju5o130dues14408ct].[usr:LinPack_563128459934046831:qk]",
+        "dataType": "float",
+        "index": 1,
+        "isReferenced": true
+      },
+      {
+        "fieldName": "SUM(Calculation1)",
+        "fieldId": "[federated.0yylszc1nyju5o130dues14408ct].[sum:Calculation_1994813213249245187:qk]",
+        "dataType": "float",
+        "index": 2,
+        "isReferenced": true
+      },
+      {
+        "fieldName": "SUM(Sales Amount)",
+        "fieldId": "[federated.0yylszc1nyju5o130dues14408ct].[sum:Sales Amount:qk]",
+        "dataType": "float",
+        "index": 3,
+        "isReferenced": true
+      }
+    ]
+  }
+}

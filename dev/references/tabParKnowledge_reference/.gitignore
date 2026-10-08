@@ -1,0 +1,50 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# Virtual Environment
+.venv/
+venv/
+env/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+logs/
+*.log
+
+# Temporary
+output/
+temp/
+tmp/
+*.tmp
+
+# Python Packaging
+*.egg-info/
+dist/
+build/
+
+# Environment
+.env
+.env.*
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Coverage
+.coverage
+htmlcov/
+.pytest_cache/
+
+# Personal scratch scripts
+tempscript.py
+# Personal scratch scripts
+tempscript.py
