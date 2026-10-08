@@ -78,6 +78,19 @@ Phase 03 establishes correspondence between:
 - Tableau Extensions API runtime representation
 - TWB/XML design-time representation
 
+Canonical TWB evidence is treated as a first-class correspondence evidence layer, explicitly incorporating:
+- `dev/validation/phase03_canonical_inspection.json`
+- `validation_evidence/PHASE_03_CORRESPONDENCE_REPORT.md`
+
+### Six Canonical Structures
+Investigations must recognize and evaluate the six canonical metadata structures:
+1. **Worksheets** (explicit name and UUID provenance)
+2. **Datasources** (canonical name, caption, version)
+3. **Tables / Relations** (logical objects and table relations)
+4. **Fields** (282 canonical fields with datatype, role, type, hidden status, default aggregation, and worksheets)
+5. **Metadata Columns** (metadata-record elements)
+6. **Column-Instances** (1074 worksheet-scoped aggregation/derivation tokens)
+
 Relevant correspondence areas include:
 
 - Dashboard
@@ -101,13 +114,17 @@ Relevant correspondence areas include:
 - Marks / encodings
 - Selected/highlighted marks
 
-Rules:
+### Evidence Progression
+Correspondence evaluation must follow and enforce the strict evidence progression:
+`SOURCE EXISTS → STRUCTURAL SIMILARITY → SEMANTIC CORRESPONDENCE → IDENTITY CORRESPONDENCE → CONFIRMED`
 
+### Anti-Heuristic Rules & Classification Constraints
 - Runtime-only information must not be invented in TWB/XML.
 - Design-time-only information must not be assumed available from the API.
 - Partial correspondence must remain partial.
 - Unresolved correspondence must remain unresolved.
-- Names alone must not establish identity equivalence.
+- **Do not treat matching names, IDs, UUIDs, counts, positions, or the mere coexistence of runtime and canonical records as proof of identity or correspondence.**
+- **DIRECT classification requires explicit supporting evidence.**
 - No heuristic identity mapping may be invented.
 
 ### Important unresolved questions
@@ -115,11 +132,11 @@ Rules:
 **Q1**
 
 Can runtime `DataTable.columns[].fieldId` be reliably correlated with the
-relevant TWB/XML `column-instance` binding?
+relevant TWB/XML `column-instance` binding? *(Preserved as unresolved unless empirical evidence proves otherwise.)*
 
 **Q2**
 
-Can `dashboard.objects[].id` be reliably correlated with TWB zone identity?
+Can `dashboard.objects[].id` be reliably correlated with TWB zone identity? *(Preserved as unresolved unless empirical evidence proves otherwise.)*
 
 The skill must investigate these questions through evidence and controlled
 validation. It must not manufacture an answer.
@@ -132,11 +149,13 @@ Use available evidence from:
 
 1. `validation_evidence/activity.log`
 2. `validation_evidence/phase03_evidence.json`
-3. TWB/XML parsed evidence when explicitly available
-4. runtime/test-script state
-5. human Windows/Tableau Desktop observations
-6. unit/regression test results
-7. previous validation-round evidence when available
+3. `dev/validation/phase03_canonical_inspection.json` (First-class canonical TWB evidence layer)
+4. `validation_evidence/PHASE_03_CORRESPONDENCE_REPORT.md` (Authoritative correspondence audit report)
+5. TWB/XML parsed evidence when explicitly available
+6. runtime/test-script state
+7. human Windows/Tableau Desktop observations
+8. unit/regression test results
+9. previous validation-round evidence when available
 
 ### Evidence handling
 
@@ -256,11 +275,15 @@ Use only these correspondence statuses:
 - `CONFIRMED`
 - `STRONG`
 - `PARTIAL`
+- `DERIVED`
+- `DESIGN_TIME_ONLY`
 - `UNRESOLVED`
 - `CONTRADICTED`
 - `INSUFFICIENT EVIDENCE`
 
-Do not infer direct equivalence from matching names alone.
+**Anti-Heuristic Rule:**
+- Do not treat matching names, IDs, UUIDs, counts, positions, or the mere coexistence of runtime and canonical records as proof of correspondence.
+- `DIRECT` classification requires explicit supporting evidence following the evidence progression (`SOURCE EXISTS → STRUCTURAL SIMILARITY → SEMANTIC CORRESPONDENCE → IDENTITY CORRESPONDENCE → CONFIRMED`).
 
 ---
 

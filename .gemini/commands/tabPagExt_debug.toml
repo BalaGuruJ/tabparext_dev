@@ -16,14 +16,22 @@ Observation → Evidence → Correspondence → Diagnosis → Recommendation →
 EVIDENCE:
 Use only evidence available within the skill's permitted read boundary, including:
 - validation_evidence/
+- dev/validation/phase03_canonical_inspection.json (First-class canonical TWB evidence layer covering Worksheets, Datasources, Tables/Relations, Fields, Metadata Columns, Column-Instances)
+- validation_evidence/PHASE_03_CORRESPONDENCE_REPORT.md (Authoritative correspondence audit report)
 - runtime/test-script state under permitted areas
 - activity logs
 - runtime evidence snapshots
-- TWB/XML evidence when available through the permitted workflow
 - human Tableau/Windows observations
 - test results
 
 Do not invent missing evidence.
+
+CORRESPONDENCE RULES:
+- Follow and enforce evidence progression: SOURCE EXISTS → STRUCTURAL SIMILARITY → SEMANTIC CORRESPONDENCE → IDENTITY CORRESPONDENCE → CONFIRMED.
+- Do not treat matching names, IDs, UUIDs, counts, positions, or the mere coexistence of runtime and canonical records as proof of correspondence.
+- DIRECT classification requires explicit supporting evidence.
+- Allowed correspondence statuses: CONFIRMED, STRONG, PARTIAL, DERIVED, DESIGN_TIME_ONLY, UNRESOLVED, CONTRADICTED, INSUFFICIENT EVIDENCE.
+- Preserve Q1 and Q2 as unresolved unless empirical evidence proves them.
 
 RESPONSE FORMAT:
 Return exactly these 8 top-level sections and in this order:
