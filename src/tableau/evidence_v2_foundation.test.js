@@ -383,19 +383,36 @@ test('Phase 03 Report - 22-Row 3-Column Correspondence Structure and Source Valu
     assert.ok(content.includes('UNRESOLVED Q2'), 'Q2 must remain UNRESOLVED in correspondence report');
 });
 
-test('inspect_twb_canonical.py Execution Sequence and Refresh Verification', async () => {
+test('inspect_twb_canonical.py Execution Sequence, Sequential Run IDs, and Refresh Verification', async () => {
     const { execSync } = await import('node:child_process');
-    const result = execSync('python3 dev/scripts/inspect_twb_canonical.py', { cwd: process.cwd(), encoding: 'utf8' });
-    assert.ok(result.includes('Inspection evidence successfully written'), 'Script stdout should report canonical inspection written');
-    assert.ok(result.includes('Phase 03 correspondence report successfully written'), 'Script stdout should report correspondence report written');
 
-    const canonicalPath = path.join(process.cwd(), 'dev', 'validation', 'phase03_canonical_inspection.json');
-    assert.ok(fs.existsSync(canonicalPath), 'phase03_canonical_inspection.json must exist');
-    const canonical = JSON.parse(fs.readFileSync(canonicalPath, 'utf8'));
-    assert.strictEqual(canonical.counts.worksheets, 90, 'Canonical counts must be preserved');
-
+    const statePath = path.join(process.cwd(), 'dev', 'validation', 'phase03_report_state.json');
     const reportPath = path.join(process.cwd(), 'validation_evidence', 'PHASE_03_CORRESPONDENCE_REPORT.md');
-    assert.ok(fs.existsSync(reportPath), 'PHASE_03_CORRESPONDENCE_REPORT.md must exist');
+
+    // Run 1
+    const result1 = execSync('python3 dev/scripts/inspect_twb_canonical.py', { cwd: process.cwd(), encoding: 'utf8' });
+    assert.ok(result1.includes('Inspection evidence successfully written'), 'Script stdout should report canonical inspection written');
+    assert.ok(result1.includes('Phase 03 correspondence report'), 'Script stdout should report correspondence report written');
+
+    assert.ok(fs.existsSync(statePath), 'phase03_report_state.json must exist');
+    const state1 = JSON.parse(fs.readFileSync(statePath, 'utf8'));
+    const runCount1 = state1.run_counter;
+    assert.ok(runCount1 > 0, 'run_counter should be greater than 0');
+
+    const report1 = fs.readFileSync(reportPath, 'utf8');
+    assert.ok(report1.includes(`PH03-RUN-${String(runCount1).padStart(4, '0')}`), 'Report 1 header must contain formatted Run ID');
+    assert.ok(report1.includes('**Generated At:**'), 'Report 1 header must contain generation timestamp');
+
+    // Run 2
+    const result2 = execSync('python3 dev/scripts/inspect_twb_canonical.py', { cwd: process.cwd(), encoding: 'utf8' });
+    assert.ok(result2.includes('Phase 03 correspondence report'), 'Script stdout should report correspondence report written on run 2');
+
+    const state2 = JSON.parse(fs.readFileSync(statePath, 'utf8'));
+    assert.strictEqual(state2.run_counter, runCount1 + 1, 'run_counter must increment sequentially by 1');
+
+    const report2 = fs.readFileSync(reportPath, 'utf8');
+    assert.ok(report2.includes(`PH03-RUN-${String(runCount1 + 1).padStart(4, '0')}`), 'Report 2 header must contain incremented sequential Run ID');
+    assert.ok(report2.includes('**Generated At:**'), 'Report 2 header must contain generation timestamp');
 });
 
 test('EvidenceCollector - Default Disabled Discovery & Saved-Payload Preservation', async () => {

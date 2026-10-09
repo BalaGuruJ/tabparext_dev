@@ -18,6 +18,7 @@ Produces structured JSON inspection evidence in dev/validation/phase03_canonical
 
 import os
 import json
+import datetime
 from tableaudocumentapi import Workbook
 
 FIXTURE_PATH = "dev/fixtures/twb_fixture.twb"
@@ -25,6 +26,7 @@ CANONICAL_OUTPUT_PATH = "dev/validation/phase03_canonical_inspection.json"
 OUTPUT_PATH = CANONICAL_OUTPUT_PATH
 RUNTIME_EVIDENCE_PATH = "validation_evidence/phase03_evidence.json"
 REPORT_OUTPUT_PATH = "validation_evidence/PHASE_03_CORRESPONDENCE_REPORT.md"
+STATE_FILE_PATH = "dev/validation/phase03_report_state.json"
 
 def inspect_twb():
     if not os.path.exists(FIXTURE_PATH):
@@ -437,7 +439,24 @@ def generate_report():
 
     table_md = "\n".join(table_lines)
 
+    # Read persistent state counter
+    run_counter = 0
+    if os.path.exists(STATE_FILE_PATH):
+        try:
+            with open(STATE_FILE_PATH, 'r', encoding='utf-8') as f:
+                state_data = json.load(f)
+                run_counter = state_data.get('run_counter', 0)
+        except Exception:
+            run_counter = 0
+
+    new_counter = run_counter + 1
+    run_id = f"PH03-RUN-{new_counter:04d}"
+    generation_timestamp = datetime.datetime.now(datetime.timezone.utc).isoformat()
+
     report_content = f"""# Phase 03 Correspondence Reconciliation Report
+
+**Report Run ID:** `{run_id}`
+**Generated At:** `{generation_timestamp}`
 
 ## 1. Executive Summary
 This report presents the reconciled Phase 03 correspondence model for `tabPagExt`, mapping Tableau workbook (`.twb`) design-time structures against live Tableau Extensions API runtime objects.
@@ -485,7 +504,17 @@ In accordance with Phase 03 governance requirements:
     with open(REPORT_OUTPUT_PATH, 'w', encoding='utf-8') as f:
         f.write(report_content)
 
-    print(f"Phase 03 correspondence report successfully written to {REPORT_OUTPUT_PATH}")
+    # Persist updated state counter only after successful report generation
+    state_payload = {
+        "run_counter": new_counter,
+        "last_run_id": run_id,
+        "last_timestamp": generation_timestamp
+    }
+    os.makedirs(os.path.dirname(STATE_FILE_PATH), exist_ok=True)
+    with open(STATE_FILE_PATH, 'w', encoding='utf-8') as f:
+        json.dump(state_payload, f, indent=2)
+
+    print(f"Phase 03 correspondence report [{run_id}] successfully written to {REPORT_OUTPUT_PATH}")
 
 if __name__ == "__main__":
     inspect_twb()
