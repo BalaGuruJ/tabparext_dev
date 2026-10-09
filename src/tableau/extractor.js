@@ -3,15 +3,24 @@
  * Phase 02 Task 02.03: Worksheet Summary Data Retrieval (Corrected DataTableReader handling)
  */
 export const Extractor = {
-    async retrieveWorksheetData(worksheet) {
+    async retrieveWorksheetData(worksheet, options = {}) {
         if (!worksheet) {
             throw new Error("No worksheet provided for data retrieval.");
         }
         let dataTable = null;
         let methodUsed = "";
 
+        const approvedOperations = Array.isArray(options.approvedOperations)
+            ? options.approvedOperations
+            : null;
+
+        const isApproved = (opName) => {
+            if (!approvedOperations) return true;
+            return approvedOperations.includes(opName);
+        };
+
         // Attempt getSummaryDataReaderAsync first (recommended for API library 1.10+, Tableau 2022.4+)
-        if (typeof worksheet.getSummaryDataReaderAsync === "function") {
+        if (isApproved("getSummaryDataReaderAsync") && typeof worksheet.getSummaryDataReaderAsync === "function") {
             methodUsed = "getSummaryDataReaderAsync";
             let reader = null;
             try {
@@ -53,8 +62,8 @@ export const Extractor = {
         }
 
         // Fallback to getSummaryDataAsync if dataTable wasn't successfully retrieved
-        if (!dataTable && typeof worksheet.getSummaryDataAsync === "function") {
-            methodUsed = "getSummaryDataAsync (fallback)";
+        if (!dataTable && isApproved("getSummaryDataAsync") && typeof worksheet.getSummaryDataAsync === "function") {
+            methodUsed = "getSummaryDataAsync" + (methodUsed ? " (fallback)" : "");
             dataTable = await worksheet.getSummaryDataAsync();
         }
 
