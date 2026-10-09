@@ -336,6 +336,53 @@ test('EvidenceCollector - Configuration Governance & Runtime Capability Discover
     }
 });
 
+test('Phase 03 Report - 22-Row 3-Column Correspondence Structure and Source Values', () => {
+    const reportPath = path.join(process.cwd(), 'validation_evidence', 'PHASE_03_CORRESPONDENCE_REPORT.md');
+    assert.ok(fs.existsSync(reportPath), 'PHASE_03_CORRESPONDENCE_REPORT.md should exist');
+
+    const content = fs.readFileSync(reportPath, 'utf8');
+
+    // Extract Section 3 table lines
+    const lines = content.split('\n');
+    const tableHeaderIdx = lines.findIndex(l => l.includes('| Correspondence Row | API Runtime JSON Value | TWB Canonical JSON Value |'));
+    assert.notStrictEqual(tableHeaderIdx, -1, 'Report should contain the 3-column table header');
+
+    const tableRows = [];
+    for (let i = tableHeaderIdx + 2; i < lines.length; i++) {
+        const line = lines[i].trim();
+        if (!line.startsWith('|')) {
+            break;
+        }
+        tableRows.push(line);
+    }
+
+    assert.strictEqual(tableRows.length, 22, 'Section 3 table must visibly contain exactly 22 correspondence data rows');
+
+    // Verify 3 columns structure per row
+    tableRows.forEach((row, idx) => {
+        const cells = row.split('|').map(c => c.trim()).slice(1, -1);
+        assert.strictEqual(cells.length, 3, `Row ${idx + 1} must contain exactly 3 columns`);
+    });
+
+    // Verify source values accuracy
+    assert.ok(content.includes('"validation"'), 'Report must include runtime dashboard name "validation"');
+    assert.ok(content.includes('"test_worksheet"'), 'Report must include runtime worksheet name "test_worksheet"');
+    assert.ok(content.includes('150 rows'), 'Report must include evaluated row count of 150 rows');
+    assert.ok(content.includes('282 canonical fields'), 'Report must include TWB canonical field count of 282');
+    assert.ok(content.includes('1074 column-instance'), 'Report must include TWB column instance count of 1074');
+    assert.ok(content.includes('federated.0yylszc1nyju5o130dues14408ct'), 'Report must include datasource ID federated.0yylszc1nyju5o130dues14408ct');
+
+    // Verify explicit missing value annotations
+    assert.ok(content.includes('Missing in Runtime JSON'), 'Report must explicitly label missing runtime values');
+    assert.ok(content.includes('Missing in Canonical JSON'), 'Report must explicitly label missing canonical values');
+    assert.ok(content.includes('Not Exposed in Extensions API'), 'Report must explicitly label design-time-only values');
+    assert.ok(content.includes('No static TWB equivalent'), 'Report must explicitly label runtime-only values');
+
+    // Verify UNRESOLVED classifications for Q1 and Q2
+    assert.ok(content.includes('UNRESOLVED Q1'), 'Q1 must remain UNRESOLVED in correspondence report');
+    assert.ok(content.includes('UNRESOLVED Q2'), 'Q2 must remain UNRESOLVED in correspondence report');
+});
+
 test('EvidenceCollector - Default Disabled Discovery & Saved-Payload Preservation', async () => {
     try {
         EvidenceCollector.resetConfig();
