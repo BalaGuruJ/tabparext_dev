@@ -13,6 +13,11 @@ PURPOSE:
 Investigate the supplied debugging target using available evidence and determine:
 Observation → Evidence → Correspondence → Diagnosis → Recommendation → Human Decision → Implementation → Validation → Re-check → Closure.
 
+EXECUTION SEQUENCE:
+1. Execute `python3 dev/scripts/inspect_twb_canonical.py` to parse `dev/fixtures/twb_fixture.twb`, refresh canonical TWB JSON (`dev/validation/phase03_canonical_inspection.json`), and regenerate the Phase 03 correspondence report (`validation_evidence/PHASE_03_CORRESPONDENCE_REPORT.md`) from canonical JSON plus runtime JSON (`validation_evidence/phase03_evidence.json`) with an exact 22-row, 3-column table.
+2. Read and evaluate the refreshed evidence files (`dev/validation/phase03_canonical_inspection.json`, `validation_evidence/phase03_evidence.json`, and `validation_evidence/PHASE_03_CORRESPONDENCE_REPORT.md`).
+3. Perform the evidence-based debugging analysis following the required 8-section response format.
+
 EVIDENCE:
 Use only evidence available within the skill's permitted read boundary, including:
 - validation_evidence/
@@ -92,9 +97,10 @@ Return exactly these 8 top-level sections and in this order:
 - Human acceptance:
 
 RULES:
-- Do not modify any files.
-- Do not modify the debugging skill, governance, contracts, design documents, source code, tests, or evidence.
-- Treat validation_evidence/ as read-only evidence.
+- Executing `python3 dev/scripts/inspect_twb_canonical.py` to refresh canonical TWB JSON evidence and regenerate the 22x3 comparison report is required upon command invocation.
+- Do not modify any files manually or outside of running `python3 dev/scripts/inspect_twb_canonical.py`.
+- Do not modify the debugging skill, governance, contracts, design documents, source code, tests, or evidence directly.
+- Treat `dev/fixtures/twb_fixture.twb` as the manually supplied blueprint fixture.
 - Do not manufacture root causes, mappings, equivalence, or fixes.
 - Distinguish evidence, hypothesis, confirmed fact, and recommendation.
 - Never label a hypothesis as a root cause.
