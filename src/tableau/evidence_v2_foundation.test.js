@@ -383,6 +383,21 @@ test('Phase 03 Report - 22-Row 3-Column Correspondence Structure and Source Valu
     assert.ok(content.includes('UNRESOLVED Q2'), 'Q2 must remain UNRESOLVED in correspondence report');
 });
 
+test('inspect_twb_canonical.py Execution Sequence and Refresh Verification', async () => {
+    const { execSync } = await import('node:child_process');
+    const result = execSync('python3 dev/scripts/inspect_twb_canonical.py', { cwd: process.cwd(), encoding: 'utf8' });
+    assert.ok(result.includes('Inspection evidence successfully written'), 'Script stdout should report canonical inspection written');
+    assert.ok(result.includes('Phase 03 correspondence report successfully written'), 'Script stdout should report correspondence report written');
+
+    const canonicalPath = path.join(process.cwd(), 'dev', 'validation', 'phase03_canonical_inspection.json');
+    assert.ok(fs.existsSync(canonicalPath), 'phase03_canonical_inspection.json must exist');
+    const canonical = JSON.parse(fs.readFileSync(canonicalPath, 'utf8'));
+    assert.strictEqual(canonical.counts.worksheets, 90, 'Canonical counts must be preserved');
+
+    const reportPath = path.join(process.cwd(), 'validation_evidence', 'PHASE_03_CORRESPONDENCE_REPORT.md');
+    assert.ok(fs.existsSync(reportPath), 'PHASE_03_CORRESPONDENCE_REPORT.md must exist');
+});
+
 test('EvidenceCollector - Default Disabled Discovery & Saved-Payload Preservation', async () => {
     try {
         EvidenceCollector.resetConfig();

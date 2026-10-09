@@ -27,8 +27,8 @@ debugging agent.
 
 ### Allowed Write
 
-Only raw runtime/test-script areas may be modified when a separate,
-explicit implementation task authorizes the modification.
+Executing `python3 dev/scripts/inspect_twb_canonical.py` (which refreshes `dev/validation/phase03_canonical_inspection.json` and regenerates `validation_evidence/PHASE_03_CORRESPONDENCE_REPORT.md` with a 22-row, 3-column table) is integrated into `/tabPagExt_debug`.
+Only raw runtime/test-script areas may be modified when a separate, explicit implementation task authorizes the modification.
 
 ### Strictly Prohibited
 
@@ -177,6 +177,14 @@ The skill must:
 ---
 
 # Debugging Workflow
+
+## 0. Initial Execution Sequence (Report & Canonical Refresh)
+
+Upon invoking `/tabPagExt_debug`:
+1. Execute `python3 dev/scripts/inspect_twb_canonical.py`.
+2. This parses `dev/fixtures/twb_fixture.twb` into `dev/validation/phase03_canonical_inspection.json`.
+3. It regenerates `validation_evidence/PHASE_03_CORRESPONDENCE_REPORT.md` from canonical JSON plus runtime JSON (`validation_evidence/phase03_evidence.json`), overwriting Section 3 with an exact 22-row, 3-column comparison table.
+4. Read and evaluate the refreshed JSON evidence and Markdown report before proceeding to analysis.
 
 ## 1. Establish the Symptom
 
