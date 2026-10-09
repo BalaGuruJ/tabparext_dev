@@ -1,0 +1,267 @@
+/**
+ * TABPAREXT — Runtime Evidence Collector v2 Foundation Unit Tests
+ * Tests capability inventory, verification/invocation/result statuses,
+ * allowlist configuration validation, and non-invocation constraints.
+ */
+
+import test from 'node:test';
+import assert from 'node:assert';
+import {
+    CapabilityInventory,
+    VERIFICATION_STATUS,
+    INVOCATION_STATUS,
+    RESULT_STATUS,
+    BASELINE_CAPABILITIES
+} from './capability_inventory.js';
+import {
+    EvidenceCaptureConfig,
+    DEFAULT_CAPTURE_CONFIG
+} from './evidence_config.js';
+
+test('CapabilityInventory - Initialization and Uniqueness', () => {
+    const inventory = new CapabilityInventory();
+    const validation = inventory.validateInventory();
+    assert.strictEqual(validation.valid, true, 'Inventory should validate successfully');
+    assert.strictEqual(validation.count, BASELINE_CAPABILITIES.length, 'All baseline capabilities should be registered');
+
+    // Test uniqueness constraint
+    assert.throws(() => {
+        inventory.registerCapability({
+            capabilityId: 'cap_dashboard_name', // duplicate ID
+            objectName: 'Dashboard',
+            memberName: 'name',
+            memberKind: 'property',
+            provenance: 'Test Source',
+            verificationStatus: VERIFICATION_STATUS.VERIFIED_SUPPORTED
+        });
+    }, /Duplicate capabilityId/);
+});
+
+test('CapabilityInventory - Correspondence Row Mapping (1-22)', () => {
+    const inventory = new CapabilityInventory();
+    for (let rowId = 1; rowId <= 22; rowId++) {
+        const caps = inventory.getByCorrespondenceRow(rowId);
+        // Rows 1-22 should have mapping definitions or at least be queryable without error
+        assert.ok(Array.isArray(caps), `Query for row ${rowId} should return an array`);
+    }
+
+    const row1Caps = inventory.getByCorrespondenceRow(1);
+    assert.strictEqual(row1Caps.length, 1);
+    assert.strictEqual(row1Caps[0].capabilityId, 'cap_dashboard_name');
+});
+
+test('Status Distinctions - Verification, Invocation, Result', () => {
+    // Verify distinct status constants exist and do not conflate meanings
+    assert.strictEqual(VERIFICATION_STATUS.DOCUMENTED, 'DOCUMENTED');
+    assert.strictEqual(VERIFICATION_STATUS.VERIFIED_SUPPORTED, 'VERIFIED_SUPPORTED');
+    assert.strictEqual(VERIFICATION_STATUS.RUNTIME_DISCOVERED, 'RUNTIME_DISCOVERED');
+
+    assert.strictEqual(INVOCATION_STATUS.INVOKED, 'INVOKED');
+    assert.strictEqual(INVOCATION_STATUS.NOT_ATTEMPTED, 'NOT_ATTEMPTED');
+    assert.strictEqual(INVOCATION_STATUS.NOT_APPLICABLE, 'NOT_APPLICABLE');
+
+    assert.strictEqual(RESULT_STATUS.SUCCESS, 'SUCCESS');
+    assert.strictEqual(RESULT_STATUS.UNAVAILABLE, 'UNAVAILABLE');
+    assert.strictEqual(RESULT_STATUS.EXCEPTION, 'EXCEPTION');
+
+    // Ensure verification and invocation statuses are completely separate enums
+    assert.notStrictEqual(VERIFICATION_STATUS.VERIFIED_SUPPORTED, INVOCATION_STATUS.INVOKED);
+});
+
+test('EvidenceCaptureConfig - Allowlist and Validation', () => {
+    const config = new EvidenceCaptureConfig({
+        mode: 'selective',
+        enabledDomains: ['dashboard.name'],
+        approvedOperations: ['getSummaryDataAsync']
+    });
+
+    const validation = config.validateConfig();
+    assert.strictEqual(validation.valid, true, 'Default configuration should be valid');
+
+    assert.strictEqual(config.isDomainEnabled('dashboard.name'), true);
+    assert.strictEqual(config.isDomainEnabled('unauthorized.domain'), false);
+
+    assert.strictEqual(config.isOperationApproved('getSummaryDataAsync'), true);
+    assert.strictEqual(config.isOperationApproved('unapprovedOperation'), false);
+
+    // Verify config cannot trigger API invocations (pure config object)
+    const bounds = config.getBounds();
+    assert.ok(bounds.maxDataRows > 0);
+    const exclusions = config.getExclusions();
+    assert.strictEqual(exclusions.excludeCredentials, true);
+});
+
+test('EvidenceCaptureConfig - Invalid Configuration Handling', () => {
+    const invalidMode = new EvidenceCaptureConfig({ mode: 'invalid_mode' });
+    assert.strictEqual(invalidMode.validateConfig().valid, false);
+
+    const invalidDomainsType = new EvidenceCaptureConfig({ enabledDomains: 'not_an_array' });
+    assert.strictEqual(invalidDomainsType.validateConfig().valid, false);
+
+    const invalidDomainValue = new EvidenceCaptureConfig({ enabledDomains: ['dashboard.name', ''] });
+    assert.strictEqual(invalidDomainValue.validateConfig().valid, false);
+
+    const invalidOpsValue = new EvidenceCaptureConfig({ approvedOperations: [123] });
+    assert.strictEqual(invalidOpsValue.validateConfig().valid, false);
+
+    const zeroBound = new EvidenceCaptureConfig({ bounds: { maxArrayElements: 0 } });
+    assert.strictEqual(zeroBound.validateConfig().valid, false);
+
+    const negativeBound = new EvidenceCaptureConfig({ bounds: { maxObjectDepth: -5 } });
+    assert.strictEqual(negativeBound.validateConfig().valid, false);
+
+    const nonFiniteBound = new EvidenceCaptureConfig({ bounds: { maxStringLength: NaN } });
+    assert.strictEqual(nonFiniteBound.validateConfig().valid, false);
+
+    const infiniteBound = new EvidenceCaptureConfig({ bounds: { maxDataRows: Infinity } });
+    assert.strictEqual(infiniteBound.validateConfig().valid, false);
+
+    const invalidExclusionType = new EvidenceCaptureConfig({ exclusions: { excludeCredentials: 'true' } });
+    assert.strictEqual(invalidExclusionType.validateConfig().valid, false);
+});
+
+test('CapabilityInventory - Registration Validation and Defensive Copying', () => {
+    const inventory = new CapabilityInventory();
+
+    // Test missing provenance
+    assert.throws(() => {
+        inventory.registerCapability({
+            capabilityId: 'cap_test_1',
+            objectName: 'Test',
+            memberName: 'test',
+            memberKind: 'method',
+            verificationStatus: VERIFICATION_STATUS.DOCUMENTED
+        });
+    }, /missing required provenance/);
+
+    // Test invalid verification status
+    assert.throws(() => {
+        inventory.registerCapability({
+            capabilityId: 'cap_test_2',
+            objectName: 'Test',
+            memberName: 'test',
+            memberKind: 'method',
+            provenance: 'Test Source',
+            verificationStatus: 'INVALID_STATUS'
+        });
+    }, /Invalid verificationStatus/);
+
+    // Test defensive copy on getCapability and getAllCapabilities
+    const cap1 = inventory.getCapability('cap_dashboard_name');
+    assert.ok(cap1);
+    cap1.objectName = 'MutatedDashboard';
+    cap1.phase03CorrespondenceRowIds.push(999);
+
+    const cap1Fresh = inventory.getCapability('cap_dashboard_name');
+    assert.strictEqual(cap1Fresh.objectName, 'Dashboard');
+    assert.deepStrictEqual(cap1Fresh.phase03CorrespondenceRowIds, [1]);
+
+    const allCaps = inventory.getAllCapabilities();
+    const targetCap = allCaps.find(c => c.capabilityId === 'cap_dashboard_name');
+    targetCap.provenance = 'Mutated Provenance';
+    
+    const targetCapFresh = inventory.getCapability('cap_dashboard_name');
+    assert.notStrictEqual(targetCapFresh.provenance, 'Mutated Provenance');
+});
+
+test('CapabilityInventory - Recursive Defensive Copying & Complete Isolation', () => {
+    const customCap = {
+        capabilityId: 'cap_custom_recursive',
+        objectName: 'Custom',
+        memberName: 'customMethod',
+        memberKind: 'method',
+        provenance: 'Custom Test Source',
+        verificationStatus: VERIFICATION_STATUS.DOCUMENTED,
+        phase03CorrespondenceRowIds: [1, 2],
+        restrictions: {
+            nestedObj: { level: 1, data: 'original' },
+            nestedArr: [{ id: 1, tags: ['a', 'b'] }]
+        }
+    };
+
+    const inventory = new CapabilityInventory();
+    inventory.registerCapability(customCap);
+
+    // 1. Mutate original input object after registration
+    customCap.objectName = 'MutatedObjectName';
+    customCap.restrictions.nestedObj.level = 999;
+    customCap.restrictions.nestedObj.data = 'mutated';
+    customCap.restrictions.nestedArr[0].id = 999;
+    customCap.restrictions.nestedArr[0].tags.push('c');
+    customCap.phase03CorrespondenceRowIds.push(99);
+
+    const fetched1 = inventory.getCapability('cap_custom_recursive');
+    assert.strictEqual(fetched1.objectName, 'Custom');
+    assert.strictEqual(fetched1.restrictions.nestedObj.level, 1);
+    assert.strictEqual(fetched1.restrictions.nestedObj.data, 'original');
+    assert.strictEqual(fetched1.restrictions.nestedArr[0].id, 1);
+    assert.deepStrictEqual(fetched1.restrictions.nestedArr[0].tags, ['a', 'b']);
+    assert.deepStrictEqual(fetched1.phase03CorrespondenceRowIds, [1, 2]);
+
+    // 2. Mutate through getCapability()
+    const fetched2 = inventory.getCapability('cap_custom_recursive');
+    fetched2.restrictions.nestedObj.level = 500;
+    fetched2.restrictions.nestedArr[0].tags.push('d');
+
+    const fetched2Fresh = inventory.getCapability('cap_custom_recursive');
+    assert.strictEqual(fetched2Fresh.restrictions.nestedObj.level, 1);
+    assert.deepStrictEqual(fetched2Fresh.restrictions.nestedArr[0].tags, ['a', 'b']);
+
+    // 3. Mutate through getAllCapabilities()
+    const all = inventory.getAllCapabilities();
+    const foundAll = all.find(c => c.capabilityId === 'cap_custom_recursive');
+    foundAll.restrictions.nestedObj.data = 'all_mutated';
+    foundAll.phase03CorrespondenceRowIds.push(88);
+
+    const fetched3Fresh = inventory.getCapability('cap_custom_recursive');
+    assert.strictEqual(fetched3Fresh.restrictions.nestedObj.data, 'original');
+    assert.deepStrictEqual(fetched3Fresh.phase03CorrespondenceRowIds, [1, 2]);
+
+    // 4. Mutate through getByCorrespondenceRow()
+    const byRow = inventory.getByCorrespondenceRow(1);
+    const foundRow = byRow.find(c => c.capabilityId === 'cap_custom_recursive');
+    foundRow.restrictions.nestedArr[0].id = 42;
+
+    const fetched4Fresh = inventory.getCapability('cap_custom_recursive');
+    assert.strictEqual(fetched4Fresh.restrictions.nestedArr[0].id, 1);
+});
+
+test('EvidenceCaptureConfig - Capture-Mode Validation Edge Cases', () => {
+    // 1. Omitted mode uses documented default ('selective')
+    const omittedConfig = new EvidenceCaptureConfig({});
+    assert.strictEqual(omittedConfig.config.mode, 'selective');
+    assert.strictEqual(omittedConfig.validateConfig().valid, true);
+
+    const undefinedModeConfig = new EvidenceCaptureConfig({ mode: undefined });
+    assert.strictEqual(undefinedModeConfig.config.mode, 'selective');
+    assert.strictEqual(undefinedModeConfig.validateConfig().valid, true);
+
+    // 2. Valid modes remain accepted
+    for (const validMode of ['minimal', 'selective', 'comprehensive']) {
+        const validConfig = new EvidenceCaptureConfig({ mode: validMode });
+        assert.strictEqual(validConfig.config.mode, validMode);
+        assert.strictEqual(validConfig.validateConfig().valid, true, `Mode '${validMode}' should be valid`);
+    }
+
+    // 3. Explicit empty string is rejected
+    const emptyStringConfig = new EvidenceCaptureConfig({ mode: '' });
+    assert.strictEqual(emptyStringConfig.validateConfig().valid, false);
+
+    // 4. Explicit null is rejected
+    const nullConfig = new EvidenceCaptureConfig({ mode: null });
+    assert.strictEqual(nullConfig.validateConfig().valid, false);
+
+    // 5. Incorrectly typed values are rejected
+    const numberConfig = new EvidenceCaptureConfig({ mode: 123 });
+    assert.strictEqual(numberConfig.validateConfig().valid, false);
+
+    const booleanConfig = new EvidenceCaptureConfig({ mode: true });
+    assert.strictEqual(booleanConfig.validateConfig().valid, false);
+
+    const objectConfig = new EvidenceCaptureConfig({ mode: { name: 'selective' } });
+    assert.strictEqual(objectConfig.validateConfig().valid, false);
+
+    // 6. Unsupported mode names are rejected
+    const unsupportedConfig = new EvidenceCaptureConfig({ mode: 'ultra' });
+    assert.strictEqual(unsupportedConfig.validateConfig().valid, false);
+});
