@@ -18,7 +18,12 @@ export const DEFAULT_CAPTURE_CONFIG = {
     approvedOperations: [
         'getSummaryDataReaderAsync',
         'getSummaryDataAsync',
-        'getSummaryColumnsInfoAsync'
+        'getSummaryColumnsInfoAsync',
+        'getDataSourcesAsync',
+        'getParametersAsync',
+        'getFiltersAsync',
+        'getSelectedMarksAsync',
+        'getLogicalTablesAsync'
     ],
     bounds: {
         maxArrayElements: 1000,

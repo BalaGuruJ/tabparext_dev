@@ -40,12 +40,12 @@
         "name": "Tableau Pagination Extension",
         "type": "extension",
         "position": {
-          "x": 29,
-          "y": 48
+          "x": 467,
+          "y": 201
         },
         "size": {
-          "width": 936,
-          "height": 788
+          "width": 333,
+          "height": 266
         },
         "isFloating": true,
         "isVisible": true,
@@ -56,7 +56,7 @@
   "worksheet": {
     "worksheetName": "test_worksheet",
     "retrievalMethod": "getSummaryDataReaderAsync",
-    "totalRowCount": 1,
+    "totalRowCount": 150,
     "dataTableColumns": [
       {
         "fieldId": "[federated.0yylszc1nyju5o130dues14408ct].[none:Product:nk]",
@@ -66,24 +66,10 @@
         "isReferenced": true
       },
       {
-        "fieldId": "[federated.0yylszc1nyju5o130dues14408ct].[usr:LinPack_563128459934046831:qk]",
-        "fieldName": "AGG(Sales per Store)",
-        "dataType": "float",
-        "index": 1,
-        "isReferenced": true
-      },
-      {
-        "fieldId": "[federated.0yylszc1nyju5o130dues14408ct].[sum:Calculation_1994813213249245187:qk]",
-        "fieldName": "SUM(Calculation1)",
-        "dataType": "float",
-        "index": 2,
-        "isReferenced": true
-      },
-      {
         "fieldId": "[federated.0yylszc1nyju5o130dues14408ct].[sum:Sales Amount:qk]",
         "fieldName": "SUM(Sales Amount)",
         "dataType": "float",
-        "index": 3,
+        "index": 1,
         "isReferenced": true
       }
     ],
@@ -96,24 +82,10 @@
         "isReferenced": true
       },
       {
-        "fieldName": "AGG(Sales per Store)",
-        "fieldId": "[federated.0yylszc1nyju5o130dues14408ct].[usr:LinPack_563128459934046831:qk]",
-        "dataType": "float",
-        "index": 1,
-        "isReferenced": true
-      },
-      {
-        "fieldName": "SUM(Calculation1)",
-        "fieldId": "[federated.0yylszc1nyju5o130dues14408ct].[sum:Calculation_1994813213249245187:qk]",
-        "dataType": "float",
-        "index": 2,
-        "isReferenced": true
-      },
-      {
         "fieldName": "SUM(Sales Amount)",
         "fieldId": "[federated.0yylszc1nyju5o130dues14408ct].[sum:Sales Amount:qk]",
         "dataType": "float",
-        "index": 3,
+        "index": 1,
         "isReferenced": true
       }
     ]

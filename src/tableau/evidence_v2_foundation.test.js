@@ -17,6 +17,7 @@ import {
     EvidenceCaptureConfig,
     DEFAULT_CAPTURE_CONFIG
 } from './evidence_config.js';
+import { EvidenceCollector } from './evidence_collector.js';
 
 test('CapabilityInventory - Initialization and Uniqueness', () => {
     const inventory = new CapabilityInventory();
@@ -265,3 +266,109 @@ test('EvidenceCaptureConfig - Capture-Mode Validation Edge Cases', () => {
     const unsupportedConfig = new EvidenceCaptureConfig({ mode: 'ultra' });
     assert.strictEqual(unsupportedConfig.validateConfig().valid, false);
 });
+
+test('EvidenceCollector - Configuration Governance & Runtime Capability Discovery', async () => {
+    // 1. Test domain gating on dashboard evidence collection
+    EvidenceCollector.setConfig({
+        enabledDomains: ['dashboard.objects'], // disable dashboard.name and dashboard.size
+        approvedOperations: []
+    });
+
+    const mockDashboard = {
+        name: 'Secret Dashboard',
+        size: { behavior: 'automatic', minSize: 100, maxSize: 500 },
+        objects: [{ id: 'obj1', name: 'Zone 1', type: 'worksheet', isFloating: false, isVisible: true }]
+    };
+
+    const dashEvidence = await EvidenceCollector.captureDashboardEvidence(mockDashboard);
+    assert.strictEqual(dashEvidence.dashboardName, null, 'Disabled domain dashboard.name should yield null');
+    assert.strictEqual(dashEvidence.dashboardSize, null, 'Disabled domain dashboard.size should yield null');
+    assert.strictEqual(dashEvidence.objects.length, 1, 'Enabled domain dashboard.objects should be collected');
+    assert.strictEqual(dashEvidence.objects[0].name, 'Zone 1');
+
+    // 2. Test safe runtime capability discovery
+    EvidenceCollector.setConfig({
+        enabledDomains: ['*'],
+        approvedOperations: [],
+        exclusions: {
+            excludeCredentials: true,
+            excludeFunctions: false,
+            excludeDomNodes: true,
+            excludeBinaryBuffers: true
+        }
+    });
+
+    const sampleTarget = {
+        name: 'Test Worksheet',
+        id: 'ws-123',
+        getSummaryColumnsInfoAsync: function() { return Promise.resolve([]); },
+        customRuntimeProperty: 'customVal'
+    };
+
+    const discovered = EvidenceCollector.discoverRuntimeCapabilities(sampleTarget, 'Worksheet');
+    assert.ok(Array.isArray(discovered));
+
+    // Check property vs method
+    const nameCap = discovered.find(c => c.memberName === 'name');
+    assert.ok(nameCap);
+    assert.strictEqual(nameCap.verificationStatus, VERIFICATION_STATUS.VERIFIED_SUPPORTED);
+    assert.strictEqual(nameCap.memberKind, 'property');
+
+    const customCap = discovered.find(c => c.memberName === 'customRuntimeProperty');
+    assert.ok(customCap);
+    assert.strictEqual(customCap.verificationStatus, VERIFICATION_STATUS.RUNTIME_DISCOVERED);
+    assert.strictEqual(customCap.invocationStatus, INVOCATION_STATUS.NOT_APPLICABLE);
+
+    const methodCap = discovered.find(c => c.memberName === 'getSummaryColumnsInfoAsync');
+    assert.ok(methodCap);
+    assert.strictEqual(methodCap.verificationStatus, VERIFICATION_STATUS.VERIFIED_SUPPORTED);
+    assert.strictEqual(methodCap.capabilityId, 'cap_worksheet_shelves');
+    assert.strictEqual(methodCap.memberKind, 'method');
+    assert.strictEqual(methodCap.invocationStatus, INVOCATION_STATUS.NOT_ATTEMPTED, 'Methods discovered passively must NOT be automatically invoked');
+
+    // Reset singleton configuration after test
+    EvidenceCollector.resetConfig();
+});
+
+test('EvidenceCollector - Default Disabled Discovery & Saved-Payload Preservation', async () => {
+    try {
+        EvidenceCollector.resetConfig();
+        const mockDashboard = { name: 'Dash', objects: [] };
+        const dashEvidence = await EvidenceCollector.captureDashboardEvidence(mockDashboard);
+        assert.strictEqual(dashEvidence.runtimeDiscovery, undefined, 'Discovery should be disabled by default');
+
+        // Enable discovery domain explicitly
+        EvidenceCollector.setConfig({
+            enabledDomains: ['dashboard.name', 'dashboard.objects', 'discovery']
+        });
+        const dashEvidenceWithDiscovery = await EvidenceCollector.captureDashboardEvidence(mockDashboard);
+        assert.ok(Array.isArray(dashEvidenceWithDiscovery.runtimeDiscovery), 'Discovery should be populated when explicitly enabled');
+        assert.ok(dashEvidenceWithDiscovery.runtimeDiscovery.length > 0);
+    } finally {
+        EvidenceCollector.resetConfig();
+    }
+});
+
+test('EvidenceCollector - Bounds Enforcement and Credential Exclusions', async () => {
+    try {
+        EvidenceCollector.setConfig({
+            enabledDomains: ['*'],
+            bounds: { maxStringLength: 5 },
+            exclusions: { excludeCredentials: true, excludeFunctions: true, excludeDomNodes: true, excludeBinaryBuffers: true }
+        });
+
+        const sensitiveObject = {
+            name: 'VeryLongDashboardNameHere',
+            authToken: 'secret-token-12345'
+        };
+
+        const discovered = EvidenceCollector.discoverRuntimeCapabilities(sensitiveObject, 'Dashboard');
+        assert.ok(Array.isArray(discovered));
+        assert.strictEqual(EvidenceCollector.getConfig().getBounds().maxStringLength, 5);
+    } finally {
+        EvidenceCollector.resetConfig();
+        assert.strictEqual(EvidenceCollector.getConfig().getBounds().maxStringLength, 10000);
+    }
+});
+
+
