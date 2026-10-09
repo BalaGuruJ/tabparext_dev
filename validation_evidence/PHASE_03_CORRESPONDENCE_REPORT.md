@@ -1,5 +1,8 @@
 # Phase 03 Correspondence Reconciliation Report
 
+**Report Run ID:** `PH03-RUN-0003`
+**Generated At:** `2026-10-09T19:19:27.680452+00:00`
+
 ## 1. Executive Summary
 This report presents the reconciled Phase 03 correspondence model for `tabPagExt`, mapping Tableau workbook (`.twb`) design-time structures against live Tableau Extensions API runtime objects. 
 
