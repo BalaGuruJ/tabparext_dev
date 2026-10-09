@@ -1,14 +1,2442 @@
 {
   "fixture": "dev/fixtures/twb_fixture.twb",
   "counts": {
-    "worksheets": 90,
+    "dashboards": 10,
+    "worksheets": 91,
     "datasources": 2,
     "tables_relations": 3,
     "fields": 282,
     "metadata_columns": 11,
-    "column_instances": 1074
+    "column_instances": 1080
   },
   "structures": {
+    "dashboards": [
+      {
+        "name": "Adhoc",
+        "zones": [
+          {
+            "id": "6",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "52",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "243",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "105",
+            "name": "Dynamic - Bar Chart",
+            "type": null
+          },
+          {
+            "id": "104",
+            "name": "Dynamic - Bar Chart",
+            "type": null
+          },
+          {
+            "id": "103",
+            "name": "Dynamic - Bar Chart",
+            "type": null
+          },
+          {
+            "id": "102",
+            "name": "Dynamic - Bar Chart",
+            "type": null
+          },
+          {
+            "id": "5",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "264",
+            "name": "Dynamic - Bar Chart",
+            "type": null
+          },
+          {
+            "id": "268",
+            "name": "Dynamic - Bar Chart",
+            "type": null
+          },
+          {
+            "id": "266",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "269",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "270",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "271",
+            "name": "Dynamic - Pareto",
+            "type": null
+          },
+          {
+            "id": "272",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "273",
+            "name": "Dynamic - Trends Analysis + Peak - Line Chart",
+            "type": null
+          },
+          {
+            "id": "274",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "275",
+            "name": "Dynamic - Trends Analysis + Peak - Line Chart (dy dimension)",
+            "type": null
+          }
+        ],
+        "provenance": "XML"
+      },
+      {
+        "name": "Drivers",
+        "zones": [
+          {
+            "id": "6",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "52",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "243",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "105",
+            "name": "Perf - Analysis Scope",
+            "type": null
+          },
+          {
+            "id": "104",
+            "name": "Perf - Analysis Scope",
+            "type": null
+          },
+          {
+            "id": "103",
+            "name": "Perf - Analysis Scope",
+            "type": null
+          },
+          {
+            "id": "102",
+            "name": "Perf - Analysis Scope",
+            "type": null
+          },
+          {
+            "id": "202",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "199",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "168",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "5",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "200",
+            "name": "Perf - Analysis Scope",
+            "type": null
+          },
+          {
+            "id": "414",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "409",
+            "name": "Drivers (Viz)",
+            "type": null
+          }
+        ],
+        "provenance": "XML"
+      },
+      {
+        "name": "Executive Summary",
+        "zones": [
+          {
+            "id": "6",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "52",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "243",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "503",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "244",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "105",
+            "name": "Perf - Analysis Scope",
+            "type": null
+          },
+          {
+            "id": "104",
+            "name": "Perf - Analysis Scope",
+            "type": null
+          },
+          {
+            "id": "103",
+            "name": "Perf - Analysis Scope",
+            "type": null
+          },
+          {
+            "id": "102",
+            "name": "Perf - Analysis Scope",
+            "type": null
+          },
+          {
+            "id": "202",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "199",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "168",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "5",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "200",
+            "name": "Perf - Analysis Scope",
+            "type": null
+          },
+          {
+            "id": "400",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "401",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "509",
+            "name": "Top Stores - Sales - Perf Bar Details bu Product Line",
+            "type": null
+          },
+          {
+            "id": "389",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "383",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "385",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "324",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "319",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "313",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "306",
+            "name": "Top Product Lines - Sales - Mini Trend",
+            "type": null
+          },
+          {
+            "id": "307",
+            "name": "Top Product Lines - Sales - Perf Bar",
+            "type": null
+          },
+          {
+            "id": "506",
+            "name": "Top Product Lines - Sales - Perf Bar Details by Product",
+            "type": null
+          },
+          {
+            "id": "500",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "417",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "415",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "420",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "423",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "424",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "434",
+            "name": "Top Brands Sales Growth",
+            "type": null
+          },
+          {
+            "id": "441",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "425",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "426",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "435",
+            "name": "Top Brands Sales Decline",
+            "type": null
+          },
+          {
+            "id": "418",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "419",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "416",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "427",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "429",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "430",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "511",
+            "name": "Top Products Sales Growth",
+            "type": null
+          },
+          {
+            "id": "442",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "432",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "433",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "512",
+            "name": "Top Products Sales Decline",
+            "type": null
+          },
+          {
+            "id": "386",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "388",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "325",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "510",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "289",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "317",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "316",
+            "name": "Top Stores - Sales - Mini Trend",
+            "type": null
+          },
+          {
+            "id": "318",
+            "name": "Top Stores - Sales - Perf Bar",
+            "type": null
+          },
+          {
+            "id": "508",
+            "name": "Top Stores - Sales - Perf Bar Details bu Product Line",
+            "type": null
+          },
+          {
+            "id": "404",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "413",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "406",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "409",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "408",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "410",
+            "name": "Top Stores Sales Growth",
+            "type": null
+          },
+          {
+            "id": "436",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "411",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "407",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "412",
+            "name": "Top Stores Sales Decline",
+            "type": null
+          },
+          {
+            "id": "501",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "502",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "504",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "505",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "507",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "528",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "529",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "530",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "271",
+            "name": "Total Sales KPI - Perf Card MCur",
+            "type": null
+          },
+          {
+            "id": "531",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "301",
+            "name": "Sales per Store KPI - Perf Card",
+            "type": null
+          },
+          {
+            "id": "532",
+            "name": "Store Performance (Map) - Sales",
+            "type": null
+          },
+          {
+            "id": "513",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "516",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "514",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "515",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "517",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "518",
+            "name": "Top Store Type by Sales - Mini Trend",
+            "type": null
+          },
+          {
+            "id": "519",
+            "name": "Top Store Type by Sales - Perf. Bar",
+            "type": null
+          }
+        ],
+        "provenance": "XML"
+      },
+      {
+        "name": "Home",
+        "zones": [
+          {
+            "id": "258",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "5",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "10",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "254",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "255",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "256",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "257",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "284",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "285",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "313",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "288",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "286",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "287",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "323",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "324",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "325",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "291",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "322",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "321",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "289",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "312",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "310",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "311",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "318",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "317",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "320",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "319",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "326",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "327",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "328",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "329",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "330",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "342",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "340",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "277",
+            "name": "Total Sales KPI - Perf Card MCur",
+            "type": null
+          },
+          {
+            "id": "341",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "315",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "314",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "281",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "282",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "278",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "280",
+            "name": "Top Product Lines - Sales - Mini Trend",
+            "type": null
+          },
+          {
+            "id": "279",
+            "name": "Top Product Lines - Sales - Perf Bar",
+            "type": null
+          },
+          {
+            "id": "343",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "283",
+            "name": "Store Performance (Map)",
+            "type": null
+          },
+          {
+            "id": "331",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "332",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "344",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "346",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "345",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "333",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "334",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "335",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "336",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "338",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "337",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "339",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "347",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "348",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "349",
+            "name": null,
+            "type": null
+          }
+        ],
+        "provenance": "XML"
+      },
+      {
+        "name": "Product",
+        "zones": [
+          {
+            "id": "6",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "52",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "243",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "461",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "519",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "520",
+            "name": "Retail Sales - Product Compare to others title",
+            "type": null
+          },
+          {
+            "id": "521",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "105",
+            "name": "Perf - Analysis Scope",
+            "type": null
+          },
+          {
+            "id": "104",
+            "name": "Perf - Analysis Scope",
+            "type": null
+          },
+          {
+            "id": "103",
+            "name": "Perf - Analysis Scope",
+            "type": null
+          },
+          {
+            "id": "102",
+            "name": "Perf - Analysis Scope",
+            "type": null
+          },
+          {
+            "id": "202",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "199",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "168",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "5",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "200",
+            "name": "Perf - Analysis Scope",
+            "type": null
+          },
+          {
+            "id": "514",
+            "name": "MAP Perf - Total Sales Value vs Ref (for Selected Product)",
+            "type": null
+          },
+          {
+            "id": "502",
+            "name": "BL Market Share  (for Selected Product)",
+            "type": null
+          },
+          {
+            "id": "475",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "503",
+            "name": "Perf - Market Share Trend YTD (for Selected Product)",
+            "type": null
+          },
+          {
+            "id": "504",
+            "name": "Perf - Market Share Trend MTD (for Selected Product)",
+            "type": null
+          },
+          {
+            "id": "495",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "498",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "505",
+            "name": "Product Card (for Selected Product)",
+            "type": null
+          },
+          {
+            "id": "499",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "511",
+            "name": "Total Sales KPI - Perf Card MCur (for Selected Product)",
+            "type": null
+          },
+          {
+            "id": "497",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "467",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "513",
+            "name": "Total Sales Value vs Ref (for Selected Product)",
+            "type": null
+          },
+          {
+            "id": "512",
+            "name": "Total Sales Current vs Previous Period Growth % (for Selected Product)",
+            "type": null
+          },
+          {
+            "id": "386",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "388",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "325",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "289",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "317",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "515",
+            "name": "Top Stores - Sales - Mini Trend (for Selected Product)",
+            "type": null
+          },
+          {
+            "id": "516",
+            "name": "Top Stores - Sales - Perf Bar (for Selected Product)",
+            "type": null
+          },
+          {
+            "id": "404",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "413",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "406",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "409",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "408",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "517",
+            "name": "Top Stores by Sales Evolution (for Selected Product)",
+            "type": null
+          },
+          {
+            "id": "436",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "411",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "407",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "518",
+            "name": "Bottom Stores by Sales Evolution (for Selected Product)",
+            "type": null
+          },
+          {
+            "id": "500",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "510",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "522",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "523",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "526",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "524",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "525",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "527",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "534",
+            "name": "Top Store Types - Sales - Mini Trend (for Selected Product)",
+            "type": null
+          },
+          {
+            "id": "528",
+            "name": "Top Store Types - Sales - Perf Bar (for Selected Product)",
+            "type": null
+          },
+          {
+            "id": "539",
+            "name": "Total Sales Estimated (for Selected Product)",
+            "type": null
+          },
+          {
+            "id": "545",
+            "name": null,
+            "type": null
+          }
+        ],
+        "provenance": "XML"
+      },
+      {
+        "name": "Product Line",
+        "zones": [
+          {
+            "id": "6",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "52",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "243",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "244",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "461",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "105",
+            "name": "Perf - Analysis Scope",
+            "type": null
+          },
+          {
+            "id": "104",
+            "name": "Perf - Analysis Scope",
+            "type": null
+          },
+          {
+            "id": "103",
+            "name": "Perf - Analysis Scope",
+            "type": null
+          },
+          {
+            "id": "102",
+            "name": "Perf - Analysis Scope",
+            "type": null
+          },
+          {
+            "id": "202",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "199",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "168",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "5",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "200",
+            "name": "Perf - Analysis Scope",
+            "type": null
+          },
+          {
+            "id": "501",
+            "name": "MAP Perf - Total Sales Value vs Ref (for Selected Business Line)",
+            "type": null
+          },
+          {
+            "id": "463",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "473",
+            "name": "BL Market Share  (for Selected Business Line)",
+            "type": null
+          },
+          {
+            "id": "475",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "474",
+            "name": "Perf - Market Share Trend 2 (for Selected Business Line)",
+            "type": null
+          },
+          {
+            "id": "476",
+            "name": "Perf - Market Share Trend 1 (for selected Business Line)",
+            "type": null
+          },
+          {
+            "id": "495",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "498",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "460",
+            "name": "Business Line details - Retail Sales",
+            "type": null
+          },
+          {
+            "id": "499",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "446",
+            "name": "Total Sales KPI - Perf Card MCur (for Selected Business Line)",
+            "type": null
+          },
+          {
+            "id": "497",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "467",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "468",
+            "name": "Total Sales Value vs Ref (for Selected Business Line)",
+            "type": null
+          },
+          {
+            "id": "469",
+            "name": "Total Sales Current vs Previous Period Growth % (selected BL)",
+            "type": null
+          },
+          {
+            "id": "386",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "388",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "325",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "289",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "317",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "448",
+            "name": "Top Stores - Sales - Mini Trend (for Selected Business Line)",
+            "type": null
+          },
+          {
+            "id": "449",
+            "name": "Top Stores - Sales - Perf Bar (for Selected Business Line)",
+            "type": null
+          },
+          {
+            "id": "404",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "413",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "406",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "409",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "408",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "455",
+            "name": "Top Stores Sales Growth (for Selected Business Line)",
+            "type": null
+          },
+          {
+            "id": "436",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "411",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "407",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "454",
+            "name": "Top Stores by Sales Decline (for Selected Business Line)",
+            "type": null
+          },
+          {
+            "id": "500",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "383",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "385",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "324",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "319",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "313",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "450",
+            "name": "Top Products - Sales - Mini Trend (for Selected Business Line)",
+            "type": null
+          },
+          {
+            "id": "451",
+            "name": "Top Products - Sales - Perf Bar (for Selected Business Line)",
+            "type": null
+          },
+          {
+            "id": "489",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "415",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "420",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "423",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "424",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "456",
+            "name": "Top Products Sales Growth (for Selected Business Line)",
+            "type": null
+          },
+          {
+            "id": "441",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "425",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "426",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "457",
+            "name": "Top Products Sales Decline (for Selected Business Line)",
+            "type": null
+          },
+          {
+            "id": "491",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "502",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "503",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "504",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "507",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "505",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "506",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "508",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "515",
+            "name": "Top Store Type by Sales - Mini Trend (for Selected Business Line)",
+            "type": null
+          },
+          {
+            "id": "509",
+            "name": "Top Store Type by Sales - Perf. Bar (for Selected Business Line)",
+            "type": null
+          },
+          {
+            "id": "516",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "517",
+            "name": "Total Sales Estimated (for Selected Business Line)",
+            "type": null
+          },
+          {
+            "id": "518",
+            "name": null,
+            "type": null
+          }
+        ],
+        "provenance": "XML"
+      },
+      {
+        "name": "Products",
+        "zones": [
+          {
+            "id": "6",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "52",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "243",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "244",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "105",
+            "name": "Perf - Analysis Scope",
+            "type": null
+          },
+          {
+            "id": "104",
+            "name": "Perf - Analysis Scope",
+            "type": null
+          },
+          {
+            "id": "103",
+            "name": "Perf - Analysis Scope",
+            "type": null
+          },
+          {
+            "id": "102",
+            "name": "Perf - Analysis Scope",
+            "type": null
+          },
+          {
+            "id": "202",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "199",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "168",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "5",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "200",
+            "name": "Perf - Analysis Scope",
+            "type": null
+          },
+          {
+            "id": "386",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "388",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "325",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "412",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "289",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "403",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "411",
+            "name": "Current vs Ref Period",
+            "type": null
+          },
+          {
+            "id": "317",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "410",
+            "name": "Product Performance (Table)",
+            "type": null
+          },
+          {
+            "id": "419",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "415",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "413",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "414",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "418",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "416",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "417",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "409",
+            "name": "Product Performance (Scatter)",
+            "type": null
+          },
+          {
+            "id": "420",
+            "name": "Label Current vs Ref Period",
+            "type": null
+          }
+        ],
+        "provenance": "XML"
+      },
+      {
+        "name": "Store",
+        "zones": [
+          {
+            "id": "6",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "52",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "243",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "441",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "433",
+            "name": "Title: Store Compare to others",
+            "type": null
+          },
+          {
+            "id": "442",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "105",
+            "name": "Perf - Analysis Scope",
+            "type": null
+          },
+          {
+            "id": "104",
+            "name": "Perf - Analysis Scope",
+            "type": null
+          },
+          {
+            "id": "103",
+            "name": "Perf - Analysis Scope",
+            "type": null
+          },
+          {
+            "id": "102",
+            "name": "Perf - Analysis Scope",
+            "type": null
+          },
+          {
+            "id": "202",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "199",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "168",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "5",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "200",
+            "name": "Perf - Analysis Scope",
+            "type": null
+          },
+          {
+            "id": "361",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "376",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "367",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "416",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "417",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "363",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "368",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "384",
+            "name": "Top Business Lines - Sales - Mini Trend (for Selected Store)",
+            "type": null
+          },
+          {
+            "id": "378",
+            "name": "Top Business Lines - Sales - Perf Bar (for Selected Store)",
+            "type": null
+          },
+          {
+            "id": "377",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "369",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "418",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "419",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "362",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "370",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "371",
+            "name": "Top Products - Sales - Mini Trend (for Selected Store)",
+            "type": null
+          },
+          {
+            "id": "372",
+            "name": "Top Products - Sales - Perf Bar (for Selected Store)",
+            "type": null
+          },
+          {
+            "id": "385",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "394",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "393",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "395",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "425",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "421",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "396",
+            "name": "Top Business Lines by Sales Evolution (for Selected Store)",
+            "type": null
+          },
+          {
+            "id": "398",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "426",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "422",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "397",
+            "name": "Bottom Business Lines by Sales Evolution (for Selected Store)",
+            "type": null
+          },
+          {
+            "id": "386",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "387",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "388",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "389",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "427",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "428",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "390",
+            "name": "Top Products by Sales Evolution (for Selected Store)",
+            "type": null
+          },
+          {
+            "id": "392",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "429",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "424",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "391",
+            "name": "Bottom Products by Sales Evolution (for Selected Store)",
+            "type": null
+          },
+          {
+            "id": "399",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "403",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "430",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "405",
+            "name": "Ranking Total Sales (for Selected Store)",
+            "type": null
+          },
+          {
+            "id": "431",
+            "name": "Ranking Total Sales vs all stores (for Selected Store)",
+            "type": null
+          },
+          {
+            "id": "434",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "436",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "402",
+            "name": "MTD Evolution vs other stores (for Selected Store)",
+            "type": null
+          },
+          {
+            "id": "404",
+            "name": "YTD Evolution vs other stores (for Selected Store)",
+            "type": null
+          },
+          {
+            "id": "437",
+            "name": "Evolution vs other stores Caption (for Selected Store)",
+            "type": null
+          },
+          {
+            "id": "408",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "439",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "440",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "438",
+            "name": "Total Sales KPI vs other stores - Perf Card (for Selected Store)",
+            "type": null
+          },
+          {
+            "id": "409",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "432",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "443",
+            "name": "Avg sales title (for Selected Store)",
+            "type": null
+          },
+          {
+            "id": "444",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "350",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "412",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "415",
+            "name": "Sales vs avg sales title (for Selected Store)",
+            "type": null
+          },
+          {
+            "id": "407",
+            "name": "Sales vs other stores (for Selected Store)",
+            "type": null
+          },
+          {
+            "id": "307",
+            "name": "Store Card (for Selected Store)",
+            "type": null
+          },
+          {
+            "id": "306",
+            "name": "Map - Store details (for Selected Store)",
+            "type": null
+          },
+          {
+            "id": "319",
+            "name": "Total Sales KPI - Perf Card (for Selected Store)",
+            "type": null
+          },
+          {
+            "id": "331",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "333",
+            "name": "Total Sales Value vs Ref (for Selected Store)",
+            "type": null
+          },
+          {
+            "id": "332",
+            "name": "Total Sales Current vs Previous Period Growth % (for Selected Store)",
+            "type": null
+          },
+          {
+            "id": "446",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "448",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "445",
+            "name": "Retail Sales - Products by Sales and delta - scatter plot (for Selected Store)",
+            "type": null
+          },
+          {
+            "id": "447",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "449",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "450",
+            "name": "Total Sales Estimated (for Selected Store)",
+            "type": null
+          },
+          {
+            "id": "451",
+            "name": null,
+            "type": null
+          }
+        ],
+        "provenance": "XML"
+      },
+      {
+        "name": "Stores",
+        "zones": [
+          {
+            "id": "6",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "52",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "243",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "244",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "105",
+            "name": "Perf - Analysis Scope",
+            "type": null
+          },
+          {
+            "id": "104",
+            "name": "Perf - Analysis Scope",
+            "type": null
+          },
+          {
+            "id": "103",
+            "name": "Perf - Analysis Scope",
+            "type": null
+          },
+          {
+            "id": "102",
+            "name": "Perf - Analysis Scope",
+            "type": null
+          },
+          {
+            "id": "202",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "199",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "168",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "5",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "200",
+            "name": "Perf - Analysis Scope",
+            "type": null
+          },
+          {
+            "id": "386",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "388",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "325",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "408",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "289",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "403",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "407",
+            "name": "Current vs Ref Period",
+            "type": null
+          },
+          {
+            "id": "317",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "402",
+            "name": "Store Performance (Table)",
+            "type": null
+          },
+          {
+            "id": "411",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "418",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "414",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "412",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "413",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "417",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "415",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "416",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "404",
+            "name": "Store Performance (Scatter)",
+            "type": null
+          },
+          {
+            "id": "419",
+            "name": "Label Current vs Ref Period",
+            "type": null
+          },
+          {
+            "id": "410",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "409",
+            "name": "Store Performance (Map)",
+            "type": null
+          }
+        ],
+        "provenance": "XML"
+      },
+      {
+        "name": "validation",
+        "zones": [
+          {
+            "id": "4",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "3",
+            "name": "test_worksheet",
+            "type": null
+          },
+          {
+            "id": "8",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "7",
+            "name": null,
+            "type": null
+          },
+          {
+            "id": "3",
+            "name": "test_worksheet",
+            "type": null
+          }
+        ],
+        "provenance": "XML"
+      }
+    ],
     "worksheets": [
       {
         "name": "Avg sales title (for Selected Store)",
@@ -458,6 +2886,11 @@
       {
         "name": "YTD Evolution vs other stores (for Selected Store)",
         "uuid": "{BE5D0944-220B-46C2-AFDE-BB1DDFB0A4A7}",
+        "provenance": "tableaudocumentapi + XML"
+      },
+      {
+        "name": "test_worksheet",
+        "uuid": "{E0C0F8F4-8590-436E-8A21-20876F629667}",
         "provenance": "tableaudocumentapi + XML"
       }
     ],
@@ -1971,7 +4404,8 @@
           "Total Sales Value vs Ref (for Selected Business Line)",
           "Total Sales Value vs Ref (for Selected Product)",
           "Total Sales Value vs Ref (for Selected Store)",
-          "YTD Evolution vs other stores (for Selected Store)"
+          "YTD Evolution vs other stores (for Selected Store)",
+          "test_worksheet"
         ],
         "provenance": "tableaudocumentapi"
       },
@@ -6241,7 +8675,8 @@
           "Total Sales Value vs Ref (for Selected Business Line)",
           "Total Sales Value vs Ref (for Selected Product)",
           "Total Sales Value vs Ref (for Selected Store)",
-          "YTD Evolution vs other stores (for Selected Store)"
+          "YTD Evolution vs other stores (for Selected Store)",
+          "test_worksheet"
         ],
         "provenance": "tableaudocumentapi"
       },
@@ -6308,7 +8743,8 @@
           "Total Sales Current vs Previous Period Growth % (for Selected Product)",
           "Total Sales Estimated (for Selected Product)",
           "Total Sales KPI - Perf Card MCur (for Selected Product)",
-          "Total Sales Value vs Ref (for Selected Product)"
+          "Total Sales Value vs Ref (for Selected Product)",
+          "test_worksheet"
         ],
         "provenance": "tableaudocumentapi"
       },
@@ -6416,7 +8852,8 @@
           "Total Sales Value vs Ref (for Selected Business Line)",
           "Total Sales Value vs Ref (for Selected Product)",
           "Total Sales Value vs Ref (for Selected Store)",
-          "YTD Evolution vs other stores (for Selected Store)"
+          "YTD Evolution vs other stores (for Selected Store)",
+          "test_worksheet"
         ],
         "provenance": "tableaudocumentapi"
       },
@@ -6619,7 +9056,8 @@
           "Total Sales Value vs Ref (for Selected Business Line)",
           "Total Sales Value vs Ref (for Selected Product)",
           "Total Sales Value vs Ref (for Selected Store)",
-          "YTD Evolution vs other stores (for Selected Store)"
+          "YTD Evolution vs other stores (for Selected Store)",
+          "test_worksheet"
         ],
         "provenance": "tableaudocumentapi"
       },
@@ -6884,7 +9322,8 @@
           "Total Sales Value vs Ref (for Selected Business Line)",
           "Total Sales Value vs Ref (for Selected Product)",
           "Total Sales Value vs Ref (for Selected Store)",
-          "YTD Evolution vs other stores (for Selected Store)"
+          "YTD Evolution vs other stores (for Selected Store)",
+          "test_worksheet"
         ],
         "provenance": "tableaudocumentapi"
       },
@@ -17040,6 +19479,60 @@
         "pivot": "key",
         "type": "quantitative",
         "worksheet": "YTD Evolution vs other stores (for Selected Store)",
+        "provenance": "XML"
+      },
+      {
+        "column": "[Country]",
+        "derivation": "None",
+        "name": "[none:Country:nk]",
+        "pivot": "key",
+        "type": "nominal",
+        "worksheet": "test_worksheet",
+        "provenance": "XML"
+      },
+      {
+        "column": "[Product Line]",
+        "derivation": "None",
+        "name": "[none:Product Line:nk]",
+        "pivot": "key",
+        "type": "nominal",
+        "worksheet": "test_worksheet",
+        "provenance": "XML"
+      },
+      {
+        "column": "[Product]",
+        "derivation": "None",
+        "name": "[none:Product:nk]",
+        "pivot": "key",
+        "type": "nominal",
+        "worksheet": "test_worksheet",
+        "provenance": "XML"
+      },
+      {
+        "column": "[Sales Amount]",
+        "derivation": "Sum",
+        "name": "[sum:Sales Amount:qk]",
+        "pivot": "key",
+        "type": "quantitative",
+        "worksheet": "test_worksheet",
+        "provenance": "XML"
+      },
+      {
+        "column": "[State]",
+        "derivation": "None",
+        "name": "[none:State:nk]",
+        "pivot": "key",
+        "type": "nominal",
+        "worksheet": "test_worksheet",
+        "provenance": "XML"
+      },
+      {
+        "column": "[Store Type]",
+        "derivation": "None",
+        "name": "[none:Store Type:nk]",
+        "pivot": "key",
+        "type": "nominal",
+        "worksheet": "test_worksheet",
         "provenance": "XML"
       }
     ]

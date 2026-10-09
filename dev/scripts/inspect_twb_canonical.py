@@ -35,6 +35,30 @@ def inspect_twb():
     wb = Workbook(FIXTURE_PATH)
     root = wb._workbookRoot
 
+    # 0. Dashboards
+    dashboards = []
+    seen_dashboards = set()
+    for dash_elem in root.findall('.//dashboard'):
+        name = dash_elem.get('name')
+        if not name or name in seen_dashboards:
+            continue
+        seen_dashboards.add(name)
+
+        zones = []
+        for zone in dash_elem.findall('.//zone'):
+            zones.append({
+                "id": zone.get('id'),
+                "name": zone.get('name'),
+                "type": zone.get('type')
+            })
+
+        dashboards.append({
+            "name": name,
+            "zones": zones,
+            "provenance": "XML"
+        })
+    dashboards.sort(key=lambda x: x["name"])
+
     # 1. Worksheets
     worksheets = []
     seen_sheets = set()
@@ -159,6 +183,7 @@ def inspect_twb():
     inspection_evidence = {
         "fixture": FIXTURE_PATH,
         "counts": {
+            "dashboards": len(dashboards),
             "worksheets": len(worksheets),
             "datasources": len(datasources),
             "tables_relations": len(unique_relations),
@@ -167,6 +192,7 @@ def inspect_twb():
             "column_instances": len(column_instances)
         },
         "structures": {
+            "dashboards": dashboards,
             "worksheets": worksheets,
             "datasources": datasources,
             "tables_relations": unique_relations,
@@ -204,7 +230,14 @@ def generate_report():
     # Row 1: Dashboard Name
     r_dash_name = runtime.get('dashboard', {}).get('dashboardName')
     rt_val_1 = f'`dashboard.dashboardName` = "{r_dash_name}"' if r_dash_name else 'Missing in Runtime JSON'
-    c_val_1 = 'Missing in Canonical JSON (No dashboard object in canonical inspection schema)'
+    c_dashboards = canonical.get('structures', {}).get('dashboards', [])
+    c_dash_names = [d.get('name') for d in c_dashboards if d.get('name')]
+    if r_dash_name and r_dash_name in c_dash_names:
+        c_val_1 = f'`structures.dashboards` (Matched "{r_dash_name}")'
+    elif c_dash_names:
+        c_val_1 = f'`structures.dashboards` ({len(c_dash_names)} dashboards present; "{r_dash_name}" absent)'
+    else:
+        c_val_1 = 'Missing in Canonical JSON (No dashboard object in canonical inspection schema)'
     rows.append((
         "**Dashboard Name**<br>*(DIRECT — Matched)*",
         rt_val_1,
@@ -227,7 +260,12 @@ def generate_report():
         objs_summary = f"`dashboard.objects` ({len(r_dash_objs)} objects: " + ", ".join([f"id {o.get('id')} `{o.get('name')}` [{o.get('type')}]" for o in r_dash_objs]) + ")"
     else:
         objs_summary = "Missing in Runtime JSON"
-    c_val_3 = 'Missing in Canonical JSON (UNRESOLVED Q2 — zone identity mapping deferred)'
+    matched_dash = next((d for d in c_dashboards if d.get('name') == r_dash_name), None) if r_dash_name else None
+    if matched_dash:
+        zones_count = len(matched_dash.get('zones', []))
+        c_val_3 = f'`structures.dashboards[].zones` ({zones_count} zones in dashboard "{r_dash_name}"; UNRESOLVED Q2 — zone identity mapping deferred)'
+    else:
+        c_val_3 = 'Missing in Canonical JSON (UNRESOLVED Q2 — zone identity mapping deferred)'
     rows.append((
         "**Dashboard Objects / Zones**<br>*(DERIVED — UNRESOLVED Q2)*",
         objs_summary,
@@ -237,8 +275,13 @@ def generate_report():
     # Row 4: Worksheet Name
     r_ws_name = runtime.get('worksheet', {}).get('worksheetName')
     rt_val_4 = f'`worksheet.worksheetName` = "{r_ws_name}"' if r_ws_name else 'Missing in Runtime JSON'
-    c_ws_count = canonical.get('counts', {}).get('worksheets', 0)
-    c_val_4 = f'`structures.worksheets` ({c_ws_count} worksheets present; "{r_ws_name}" absent)'
+    c_worksheets = canonical.get('structures', {}).get('worksheets', [])
+    c_ws_names = [w.get('name') for w in c_worksheets if w.get('name')]
+    c_ws_count = len(c_worksheets)
+    if r_ws_name and r_ws_name in c_ws_names:
+        c_val_4 = f'`structures.worksheets` ({c_ws_count} worksheets present; Matched "{r_ws_name}")'
+    else:
+        c_val_4 = f'`structures.worksheets` ({c_ws_count} worksheets present; "{r_ws_name}" absent)'
     rows.append((
         "**Worksheet Name**<br>*(DIRECT — Runtime Worksheet Discovered)*",
         rt_val_4,
@@ -467,7 +510,7 @@ In accordance with Phase 03 governance (`PHASE_CONTRACT.md` and `DESIGN.md`), th
 
 ## 2. Canonical Inspection & Evidence Metrics Overview
 - **Design-Time TWB Source:** `dev/fixtures/twb_fixture.twb` (Dashboard: `validation`, Worksheet: `test_worksheet`)
-- **Canonical Inspection Evidence:** `dev/validation/phase03_canonical_inspection.json` ({canonical.get('counts', {}).get('worksheets', 0)} worksheets, {canonical.get('counts', {}).get('datasources', 0)} datasources, {canonical.get('counts', {}).get('tables_relations', 0)} logical/physical relations, {canonical.get('counts', {}).get('fields', 0)} canonical fields, {canonical.get('counts', {}).get('metadata_columns', 0)} metadata records, {canonical.get('counts', {}).get('column_instances', 0)} column instances)
+- **Canonical Inspection Evidence:** `dev/validation/phase03_canonical_inspection.json` ({canonical.get('counts', {}).get('dashboards', 0)} dashboards, {canonical.get('counts', {}).get('worksheets', 0)} worksheets, {canonical.get('counts', {}).get('datasources', 0)} datasources, {canonical.get('counts', {}).get('tables_relations', 0)} logical/physical relations, {canonical.get('counts', {}).get('fields', 0)} canonical fields, {canonical.get('counts', {}).get('metadata_columns', 0)} metadata records, {canonical.get('counts', {}).get('column_instances', 0)} column instances)
 - **Runtime Evidence:** `validation_evidence/phase03_evidence.json` (Dashboard name `{runtime.get('dashboard', {}).get('dashboardName', 'N/A')}`, objects, worksheet `{runtime.get('worksheet', {}).get('worksheetName', 'N/A')}`, `dataTableColumns`, `summaryColumnsInfo`)
 
 ---
