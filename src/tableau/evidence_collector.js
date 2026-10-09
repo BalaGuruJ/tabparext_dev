@@ -169,10 +169,13 @@ export const EvidenceCollector = {
         // Q1 Evidence: Evaluated Table Schema from DataTable.columns[]
         let dataTableColumns = [];
         let summaryExtraction = null;
-        const canCaptureSummaryData = this.config.isDomainEnabled('worksheet.summaryData') && this.config.isOperationApproved('getSummaryDataAsync');
+        const canCaptureSummaryData = this.config.isDomainEnabled('worksheet.summaryData') &&
+            (this.config.isOperationApproved('getSummaryDataAsync') || this.config.isOperationApproved('getSummaryDataReaderAsync'));
         if (canCaptureSummaryData) {
             try {
-                summaryExtraction = await Extractor.retrieveWorksheetData(worksheet);
+                summaryExtraction = await Extractor.retrieveWorksheetData(worksheet, {
+                    approvedOperations: this.config.config.approvedOperations
+                });
                 const rawCols = summaryExtraction.columns || [];
                 const maxCols = bounds.maxArrayElements || 1000;
                 dataTableColumns = rawCols.slice(0, maxCols).map(col => sanitizeValue({

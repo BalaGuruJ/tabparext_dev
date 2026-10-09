@@ -6,6 +6,9 @@
 
 import test from 'node:test';
 import assert from 'node:assert';
+import fs from 'node:fs';
+import path from 'node:path';
+import { spawn } from 'node:child_process';
 import {
     CapabilityInventory,
     VERIFICATION_STATUS,
@@ -18,6 +21,7 @@ import {
     DEFAULT_CAPTURE_CONFIG
 } from './evidence_config.js';
 import { EvidenceCollector } from './evidence_collector.js';
+import { Extractor } from './extractor.js';
 
 test('CapabilityInventory - Initialization and Uniqueness', () => {
     const inventory = new CapabilityInventory();
@@ -268,66 +272,68 @@ test('EvidenceCaptureConfig - Capture-Mode Validation Edge Cases', () => {
 });
 
 test('EvidenceCollector - Configuration Governance & Runtime Capability Discovery', async () => {
-    // 1. Test domain gating on dashboard evidence collection
-    EvidenceCollector.setConfig({
-        enabledDomains: ['dashboard.objects'], // disable dashboard.name and dashboard.size
-        approvedOperations: []
-    });
+    try {
+        // 1. Test domain gating on dashboard evidence collection
+        EvidenceCollector.setConfig({
+            enabledDomains: ['dashboard.objects'], // disable dashboard.name and dashboard.size
+            approvedOperations: []
+        });
 
-    const mockDashboard = {
-        name: 'Secret Dashboard',
-        size: { behavior: 'automatic', minSize: 100, maxSize: 500 },
-        objects: [{ id: 'obj1', name: 'Zone 1', type: 'worksheet', isFloating: false, isVisible: true }]
-    };
+        const mockDashboard = {
+            name: 'Secret Dashboard',
+            size: { behavior: 'automatic', minSize: 100, maxSize: 500 },
+            objects: [{ id: 'obj1', name: 'Zone 1', type: 'worksheet', isFloating: false, isVisible: true }]
+        };
 
-    const dashEvidence = await EvidenceCollector.captureDashboardEvidence(mockDashboard);
-    assert.strictEqual(dashEvidence.dashboardName, null, 'Disabled domain dashboard.name should yield null');
-    assert.strictEqual(dashEvidence.dashboardSize, null, 'Disabled domain dashboard.size should yield null');
-    assert.strictEqual(dashEvidence.objects.length, 1, 'Enabled domain dashboard.objects should be collected');
-    assert.strictEqual(dashEvidence.objects[0].name, 'Zone 1');
+        const dashEvidence = await EvidenceCollector.captureDashboardEvidence(mockDashboard);
+        assert.strictEqual(dashEvidence.dashboardName, null, 'Disabled domain dashboard.name should yield null');
+        assert.strictEqual(dashEvidence.dashboardSize, null, 'Disabled domain dashboard.size should yield null');
+        assert.strictEqual(dashEvidence.objects.length, 1, 'Enabled domain dashboard.objects should be collected');
+        assert.strictEqual(dashEvidence.objects[0].name, 'Zone 1');
 
-    // 2. Test safe runtime capability discovery
-    EvidenceCollector.setConfig({
-        enabledDomains: ['*'],
-        approvedOperations: [],
-        exclusions: {
-            excludeCredentials: true,
-            excludeFunctions: false,
-            excludeDomNodes: true,
-            excludeBinaryBuffers: true
-        }
-    });
+        // 2. Test safe runtime capability discovery
+        EvidenceCollector.setConfig({
+            enabledDomains: ['*'],
+            approvedOperations: [],
+            exclusions: {
+                excludeCredentials: true,
+                excludeFunctions: false,
+                excludeDomNodes: true,
+                excludeBinaryBuffers: true
+            }
+        });
 
-    const sampleTarget = {
-        name: 'Test Worksheet',
-        id: 'ws-123',
-        getSummaryColumnsInfoAsync: function() { return Promise.resolve([]); },
-        customRuntimeProperty: 'customVal'
-    };
+        const sampleTarget = {
+            name: 'Test Worksheet',
+            id: 'ws-123',
+            getSummaryColumnsInfoAsync: function() { return Promise.resolve([]); },
+            customRuntimeProperty: 'customVal'
+        };
 
-    const discovered = EvidenceCollector.discoverRuntimeCapabilities(sampleTarget, 'Worksheet');
-    assert.ok(Array.isArray(discovered));
+        const discovered = EvidenceCollector.discoverRuntimeCapabilities(sampleTarget, 'Worksheet');
+        assert.ok(Array.isArray(discovered));
 
-    // Check property vs method
-    const nameCap = discovered.find(c => c.memberName === 'name');
-    assert.ok(nameCap);
-    assert.strictEqual(nameCap.verificationStatus, VERIFICATION_STATUS.VERIFIED_SUPPORTED);
-    assert.strictEqual(nameCap.memberKind, 'property');
+        // Check property vs method
+        const nameCap = discovered.find(c => c.memberName === 'name');
+        assert.ok(nameCap);
+        assert.strictEqual(nameCap.verificationStatus, VERIFICATION_STATUS.VERIFIED_SUPPORTED);
+        assert.strictEqual(nameCap.memberKind, 'property');
 
-    const customCap = discovered.find(c => c.memberName === 'customRuntimeProperty');
-    assert.ok(customCap);
-    assert.strictEqual(customCap.verificationStatus, VERIFICATION_STATUS.RUNTIME_DISCOVERED);
-    assert.strictEqual(customCap.invocationStatus, INVOCATION_STATUS.NOT_APPLICABLE);
+        const customCap = discovered.find(c => c.memberName === 'customRuntimeProperty');
+        assert.ok(customCap);
+        assert.strictEqual(customCap.verificationStatus, VERIFICATION_STATUS.RUNTIME_DISCOVERED);
+        assert.strictEqual(customCap.invocationStatus, INVOCATION_STATUS.NOT_APPLICABLE);
 
-    const methodCap = discovered.find(c => c.memberName === 'getSummaryColumnsInfoAsync');
-    assert.ok(methodCap);
-    assert.strictEqual(methodCap.verificationStatus, VERIFICATION_STATUS.VERIFIED_SUPPORTED);
-    assert.strictEqual(methodCap.capabilityId, 'cap_worksheet_shelves');
-    assert.strictEqual(methodCap.memberKind, 'method');
-    assert.strictEqual(methodCap.invocationStatus, INVOCATION_STATUS.NOT_ATTEMPTED, 'Methods discovered passively must NOT be automatically invoked');
-
-    // Reset singleton configuration after test
-    EvidenceCollector.resetConfig();
+        const methodCap = discovered.find(c => c.memberName === 'getSummaryColumnsInfoAsync');
+        assert.ok(methodCap);
+        assert.strictEqual(methodCap.verificationStatus, VERIFICATION_STATUS.VERIFIED_SUPPORTED);
+        assert.strictEqual(methodCap.capabilityId, 'cap_worksheet_shelves');
+        assert.strictEqual(methodCap.memberKind, 'method');
+        assert.strictEqual(methodCap.invocationStatus, INVOCATION_STATUS.NOT_ATTEMPTED, 'Methods discovered passively must NOT be automatically invoked');
+    } finally {
+        // Reset singleton configuration after test
+        EvidenceCollector.resetConfig();
+    }
 });
 
 test('EvidenceCollector - Default Disabled Discovery & Saved-Payload Preservation', async () => {
@@ -371,4 +377,214 @@ test('EvidenceCollector - Bounds Enforcement and Credential Exclusions', async (
     }
 });
 
+test('EvidenceCollector - Real String Truncation and Credential Redaction', async () => {
+    try {
+        EvidenceCollector.setConfig({
+            enabledDomains: ['*'],
+            bounds: { maxStringLength: 10 },
+            exclusions: { excludeCredentials: true, excludeFunctions: true, excludeDomNodes: true, excludeBinaryBuffers: true }
+        });
+
+        const sensitiveObject = {
+            name: 'DashboardWithAVeryLongNameForTesting',
+            authToken: 'secret-token-12345',
+            password: 'MySecretPassword123',
+            secretKey: 'top-secret-val',
+            userCredential: 'credential-data',
+            authHeader: 'Bearer token-value',
+            normalField: 'ShortVal'
+        };
+
+        // Test captureDashboardEvidence with long string
+        const dashEvidence = await EvidenceCollector.captureDashboardEvidence(sensitiveObject);
+        assert.strictEqual(
+            dashEvidence.dashboardName,
+            'DashboardW...[truncated]',
+            'Dashboard name exceeding maxStringLength should be truncated with ...[truncated]'
+        );
+
+        // Test exportEvidence / sanitizeValue for credential redaction and string truncation
+        let exportedPayload = null;
+        const originalLog = console.log;
+        console.log = (...args) => {
+            if (args[0] && typeof args[0] === 'string' && args[0].includes('Evidence captured and preserved')) {
+                exportedPayload = args[1];
+            }
+        };
+
+        try {
+            await EvidenceCollector.exportEvidence(sensitiveObject, 'test_sanitization.json');
+        } finally {
+            console.log = originalLog;
+        }
+
+        assert.ok(exportedPayload, 'Exported payload should be captured');
+        const ev = exportedPayload.evidence;
+        assert.strictEqual(ev.name, 'DashboardW...[truncated]', 'Exported string exceeding length limit should be truncated');
+        assert.strictEqual(ev.authToken, '[Redacted Credential]', 'authToken field should be redacted');
+        assert.strictEqual(ev.password, '[Redacted Credential]', 'password field should be redacted');
+        assert.strictEqual(ev.secretKey, '[Redacted Credential]', 'secretKey field should be redacted');
+        assert.strictEqual(ev.userCredential, '[Redacted Credential]', 'userCredential field should be redacted');
+        assert.strictEqual(ev.authHeader, '[Redacted Credential]', 'authHeader field should be redacted');
+        assert.strictEqual(ev.normalField, 'ShortVal', 'Non-credential, short field should be preserved');
+    } finally {
+        EvidenceCollector.resetConfig();
+    }
+});
+
+test('EvidenceCollector - RuntimeDiscovery survives exportEvidence and appears in receiver-saved JSON', async () => {
+    let receiverProc = null;
+    const testFilename = `test_runtime_discovery_${Date.now()}.json`;
+    const captureFilePath = path.join(process.cwd(), 'validation_evidence', 'runtime_captures', testFilename);
+
+    try {
+        await new Promise((resolve, reject) => {
+            receiverProc = spawn('python3', ['validation/validation_receiver.py'], {
+                cwd: process.cwd()
+            });
+
+            let started = false;
+            receiverProc.stdout.on('data', (data) => {
+                if (!started && data.toString().includes('running on port 8000')) {
+                    started = true;
+                    resolve();
+                }
+            });
+
+            receiverProc.on('error', (err) => {
+                if (!started) reject(err);
+            });
+
+            setTimeout(() => {
+                if (!started) resolve();
+            }, 1000);
+        });
+
+        EvidenceCollector.setConfig({
+            enabledDomains: ['*'],
+            approvedOperations: ['getSummaryDataAsync', 'getSummaryDataReaderAsync']
+        });
+
+        const mockDashboard = {
+            name: 'Discovery Test Dashboard',
+            objects: [{ id: 'z1', name: 'Zone 1', type: 'worksheet' }],
+            customProperty: 'customVal'
+        };
+
+        const dashEvidence = await EvidenceCollector.captureDashboardEvidence(mockDashboard);
+        assert.ok(Array.isArray(dashEvidence.runtimeDiscovery), 'Runtime discovery should be an array');
+        assert.ok(dashEvidence.runtimeDiscovery.length > 0, 'Runtime discovery should not be empty');
+
+        await EvidenceCollector.exportEvidence({ dashboard: dashEvidence }, testFilename);
+
+        // Assert file exists on disk from receiver
+        assert.ok(fs.existsSync(captureFilePath), `Receiver-saved file should exist at ${captureFilePath}`);
+        const savedData = JSON.parse(fs.readFileSync(captureFilePath, 'utf8'));
+
+        assert.ok(savedData.dashboard, 'Saved data should contain dashboard evidence');
+        assert.ok(Array.isArray(savedData.dashboard.runtimeDiscovery), 'runtimeDiscovery should be present as an array in receiver-saved JSON');
+        assert.strictEqual(savedData.dashboard.runtimeDiscovery.length, dashEvidence.runtimeDiscovery.length);
+        assert.strictEqual(savedData.dashboard.runtimeDiscovery[0].objectName, 'Dashboard');
+    } finally {
+        EvidenceCollector.resetConfig();
+        if (receiverProc) {
+            receiverProc.kill('SIGTERM');
+        }
+        if (fs.existsSync(captureFilePath)) {
+            try { fs.unlinkSync(captureFilePath); } catch (e) {}
+        }
+    }
+});
+
+test('Extractor & EvidenceCollector - Operation Allowlist Path Enforcement', async () => {
+    try {
+        let readerCalled = false;
+        let summaryDataCalled = false;
+
+        const mockWs = {
+            name: 'Test Worksheet',
+            getSummaryDataReaderAsync: async () => {
+                readerCalled = true;
+                return {
+                    getAllPagesAsync: async () => ({ columns: [], data: [], totalRowCount: 0 }),
+                    releaseAsync: async () => {}
+                };
+            },
+            getSummaryDataAsync: async () => {
+                summaryDataCalled = true;
+                return { columns: [], data: [], totalRowCount: 0 };
+            }
+        };
+
+        // Case 1: Only getSummaryDataReaderAsync approved
+        readerCalled = false;
+        summaryDataCalled = false;
+        const res1 = await Extractor.retrieveWorksheetData(mockWs, {
+            approvedOperations: ['getSummaryDataReaderAsync']
+        });
+        assert.strictEqual(readerCalled, true, 'getSummaryDataReaderAsync should be called when approved');
+        assert.strictEqual(summaryDataCalled, false, 'getSummaryDataAsync should not be called');
+        assert.strictEqual(res1.methodUsed, 'getSummaryDataReaderAsync');
+
+        // Case 2: Only getSummaryDataReaderAsync approved, but fails -> fallback to getSummaryDataAsync blocked
+        const mockWsFailingReader = {
+            name: 'Failing Reader WS',
+            getSummaryDataReaderAsync: async () => {
+                throw new Error('Reader failed');
+            },
+            getSummaryDataAsync: async () => {
+                summaryDataCalled = true;
+                return { columns: [], data: [], totalRowCount: 0 };
+            }
+        };
+        summaryDataCalled = false;
+        await assert.rejects(
+            async () => {
+                await Extractor.retrieveWorksheetData(mockWsFailingReader, {
+                    approvedOperations: ['getSummaryDataReaderAsync']
+                });
+            },
+            /Failed to retrieve summary data table/
+        );
+        assert.strictEqual(summaryDataCalled, false, 'Fallback getSummaryDataAsync must NOT be called if unapproved');
+
+        // Case 3: Only getSummaryDataAsync approved
+        summaryDataCalled = false;
+        readerCalled = false;
+        const res3 = await Extractor.retrieveWorksheetData(mockWs, {
+            approvedOperations: ['getSummaryDataAsync']
+        });
+        assert.strictEqual(readerCalled, false, 'getSummaryDataReaderAsync should NOT be called when unapproved');
+        assert.strictEqual(summaryDataCalled, true, 'getSummaryDataAsync should be called when approved');
+        assert.strictEqual(res3.methodUsed, 'getSummaryDataAsync');
+
+        // Case 4: Neither approved
+        summaryDataCalled = false;
+        readerCalled = false;
+        await assert.rejects(
+            async () => {
+                await Extractor.retrieveWorksheetData(mockWs, {
+                    approvedOperations: []
+                });
+            },
+            /Failed to retrieve summary data table/
+        );
+        assert.strictEqual(readerCalled, false);
+        assert.strictEqual(summaryDataCalled, false);
+
+        // Case 5: EvidenceCollector passes approved operations properly
+        EvidenceCollector.setConfig({
+            enabledDomains: ['worksheet.summaryData'],
+            approvedOperations: ['getSummaryDataAsync'] // Reader not approved
+        });
+        summaryDataCalled = false;
+        readerCalled = false;
+        const wsEvidence = await EvidenceCollector.captureWorksheetEvidence(mockWs);
+        assert.strictEqual(readerCalled, false, 'EvidenceCollector should respect config and skip unapproved reader');
+        assert.strictEqual(summaryDataCalled, true, 'EvidenceCollector should call approved getSummaryDataAsync');
+        assert.strictEqual(wsEvidence.retrievalMethod, 'getSummaryDataAsync');
+    } finally {
+        EvidenceCollector.resetConfig();
+    }
+});
 
