@@ -56,6 +56,27 @@ def inspect_twb():
         })
     worksheets.sort(key=lambda x: x["name"])
 
+    # 1.5 Dashboards
+    dashboards = []
+    seen_dashboards = set()
+    for dash_elem in root.findall('.//dashboard'):
+        name = dash_elem.get('name')
+        if not name or name in seen_dashboards:
+            continue
+        seen_dashboards.add(name)
+
+        uuid = None
+        simple_id = dash_elem.find('simple-id')
+        if simple_id is not None:
+            uuid = simple_id.get('uuid')
+
+        dashboards.append({
+            "name": name,
+            "uuid": uuid,
+            "provenance": "XML"
+        })
+    dashboards.sort(key=lambda x: x["name"])
+
     # 2. Datasources
     datasources = []
     for ds in wb.datasources:
@@ -159,6 +180,7 @@ def inspect_twb():
     inspection_evidence = {
         "fixture": FIXTURE_PATH,
         "counts": {
+            "dashboards": len(dashboards),
             "worksheets": len(worksheets),
             "datasources": len(datasources),
             "tables_relations": len(unique_relations),
@@ -167,6 +189,7 @@ def inspect_twb():
             "column_instances": len(column_instances)
         },
         "structures": {
+            "dashboards": dashboards,
             "worksheets": worksheets,
             "datasources": datasources,
             "tables_relations": unique_relations,
@@ -204,7 +227,15 @@ def generate_report():
     # Row 1: Dashboard Name
     r_dash_name = runtime.get('dashboard', {}).get('dashboardName')
     rt_val_1 = f'`dashboard.dashboardName` = "{r_dash_name}"' if r_dash_name else 'Missing in Runtime JSON'
-    c_val_1 = 'Missing in Canonical JSON (No dashboard object in canonical inspection schema)'
+    c_dashboards = canonical.get('structures', {}).get('dashboards', [])
+    c_dash_names = [d["name"] for d in c_dashboards]
+    c_dash_count = len(c_dashboards)
+    if r_dash_name and r_dash_name in c_dash_names:
+        c_val_1 = f'`structures.dashboards` ({c_dash_count} dashboards present; "{r_dash_name}" present)'
+    elif r_dash_name:
+        c_val_1 = f'`structures.dashboards` ({c_dash_count} dashboards present; "{r_dash_name}" absent)'
+    else:
+        c_val_1 = f'`structures.dashboards` ({c_dash_count} dashboards present)'
     rows.append((
         "**Dashboard Name**<br>*(DIRECT — Matched)*",
         rt_val_1,
@@ -237,8 +268,15 @@ def generate_report():
     # Row 4: Worksheet Name
     r_ws_name = runtime.get('worksheet', {}).get('worksheetName')
     rt_val_4 = f'`worksheet.worksheetName` = "{r_ws_name}"' if r_ws_name else 'Missing in Runtime JSON'
-    c_ws_count = canonical.get('counts', {}).get('worksheets', 0)
-    c_val_4 = f'`structures.worksheets` ({c_ws_count} worksheets present; "{r_ws_name}" absent)'
+    c_worksheets = canonical.get('structures', {}).get('worksheets', [])
+    c_ws_names = [w["name"] for w in c_worksheets]
+    c_ws_count = len(c_worksheets)
+    if r_ws_name and r_ws_name in c_ws_names:
+        c_val_4 = f'`structures.worksheets` ({c_ws_count} worksheets present; "{r_ws_name}" present)'
+    elif r_ws_name:
+        c_val_4 = f'`structures.worksheets` ({c_ws_count} worksheets present; "{r_ws_name}" absent)'
+    else:
+        c_val_4 = f'`structures.worksheets` ({c_ws_count} worksheets present)'
     rows.append((
         "**Worksheet Name**<br>*(DIRECT — Runtime Worksheet Discovered)*",
         rt_val_4,

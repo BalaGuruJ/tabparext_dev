@@ -1,14 +1,67 @@
 {
   "fixture": "dev/fixtures/twb_fixture.twb",
   "counts": {
-    "worksheets": 90,
+    "dashboards": 10,
+    "worksheets": 91,
     "datasources": 2,
     "tables_relations": 3,
     "fields": 282,
     "metadata_columns": 11,
-    "column_instances": 1074
+    "column_instances": 1080
   },
   "structures": {
+    "dashboards": [
+      {
+        "name": "Adhoc",
+        "uuid": "{A8E27511-43A9-4A5E-8F3A-512D172CA8EA}",
+        "provenance": "XML"
+      },
+      {
+        "name": "Drivers",
+        "uuid": "{BBF66121-A83D-4B8B-954F-6A276D67725E}",
+        "provenance": "XML"
+      },
+      {
+        "name": "Executive Summary",
+        "uuid": "{BF031CF9-B4CE-486D-B900-A90D84E925F0}",
+        "provenance": "XML"
+      },
+      {
+        "name": "Home",
+        "uuid": "{CE7356D4-124D-4C12-B935-8955CF19510A}",
+        "provenance": "XML"
+      },
+      {
+        "name": "Product",
+        "uuid": "{B0C904CA-425B-44AE-93D5-7584D45036C1}",
+        "provenance": "XML"
+      },
+      {
+        "name": "Product Line",
+        "uuid": "{777EFCB8-EEBF-4306-BD37-ECC92CCD6D5D}",
+        "provenance": "XML"
+      },
+      {
+        "name": "Products",
+        "uuid": "{4AB18F8C-8EA2-4722-8E80-C5CD6214C900}",
+        "provenance": "XML"
+      },
+      {
+        "name": "Store",
+        "uuid": "{A15008D2-505A-4DE0-BC02-B467425A5C87}",
+        "provenance": "XML"
+      },
+      {
+        "name": "Stores",
+        "uuid": "{1631F680-6A9B-4984-A1DA-A323FC3CD970}",
+        "provenance": "XML"
+      },
+      {
+        "name": "validation",
+        "uuid": "{EDA143C0-0760-49BB-BCAE-A32D47486646}",
+        "provenance": "XML"
+      }
+    ],
     "worksheets": [
       {
         "name": "Avg sales title (for Selected Store)",
@@ -458,6 +511,11 @@
       {
         "name": "YTD Evolution vs other stores (for Selected Store)",
         "uuid": "{BE5D0944-220B-46C2-AFDE-BB1DDFB0A4A7}",
+        "provenance": "tableaudocumentapi + XML"
+      },
+      {
+        "name": "test_worksheet",
+        "uuid": "{E0C0F8F4-8590-436E-8A21-20876F629667}",
         "provenance": "tableaudocumentapi + XML"
       }
     ],
@@ -1971,7 +2029,8 @@
           "Total Sales Value vs Ref (for Selected Business Line)",
           "Total Sales Value vs Ref (for Selected Product)",
           "Total Sales Value vs Ref (for Selected Store)",
-          "YTD Evolution vs other stores (for Selected Store)"
+          "YTD Evolution vs other stores (for Selected Store)",
+          "test_worksheet"
         ],
         "provenance": "tableaudocumentapi"
       },
@@ -6241,7 +6300,8 @@
           "Total Sales Value vs Ref (for Selected Business Line)",
           "Total Sales Value vs Ref (for Selected Product)",
           "Total Sales Value vs Ref (for Selected Store)",
-          "YTD Evolution vs other stores (for Selected Store)"
+          "YTD Evolution vs other stores (for Selected Store)",
+          "test_worksheet"
         ],
         "provenance": "tableaudocumentapi"
       },
@@ -6308,7 +6368,8 @@
           "Total Sales Current vs Previous Period Growth % (for Selected Product)",
           "Total Sales Estimated (for Selected Product)",
           "Total Sales KPI - Perf Card MCur (for Selected Product)",
-          "Total Sales Value vs Ref (for Selected Product)"
+          "Total Sales Value vs Ref (for Selected Product)",
+          "test_worksheet"
         ],
         "provenance": "tableaudocumentapi"
       },
@@ -6416,7 +6477,8 @@
           "Total Sales Value vs Ref (for Selected Business Line)",
           "Total Sales Value vs Ref (for Selected Product)",
           "Total Sales Value vs Ref (for Selected Store)",
-          "YTD Evolution vs other stores (for Selected Store)"
+          "YTD Evolution vs other stores (for Selected Store)",
+          "test_worksheet"
         ],
         "provenance": "tableaudocumentapi"
       },
@@ -6619,7 +6681,8 @@
           "Total Sales Value vs Ref (for Selected Business Line)",
           "Total Sales Value vs Ref (for Selected Product)",
           "Total Sales Value vs Ref (for Selected Store)",
-          "YTD Evolution vs other stores (for Selected Store)"
+          "YTD Evolution vs other stores (for Selected Store)",
+          "test_worksheet"
         ],
         "provenance": "tableaudocumentapi"
       },
@@ -6884,7 +6947,8 @@
           "Total Sales Value vs Ref (for Selected Business Line)",
           "Total Sales Value vs Ref (for Selected Product)",
           "Total Sales Value vs Ref (for Selected Store)",
-          "YTD Evolution vs other stores (for Selected Store)"
+          "YTD Evolution vs other stores (for Selected Store)",
+          "test_worksheet"
         ],
         "provenance": "tableaudocumentapi"
       },
@@ -17040,6 +17104,60 @@
         "pivot": "key",
         "type": "quantitative",
         "worksheet": "YTD Evolution vs other stores (for Selected Store)",
+        "provenance": "XML"
+      },
+      {
+        "column": "[Country]",
+        "derivation": "None",
+        "name": "[none:Country:nk]",
+        "pivot": "key",
+        "type": "nominal",
+        "worksheet": "test_worksheet",
+        "provenance": "XML"
+      },
+      {
+        "column": "[Product Line]",
+        "derivation": "None",
+        "name": "[none:Product Line:nk]",
+        "pivot": "key",
+        "type": "nominal",
+        "worksheet": "test_worksheet",
+        "provenance": "XML"
+      },
+      {
+        "column": "[Product]",
+        "derivation": "None",
+        "name": "[none:Product:nk]",
+        "pivot": "key",
+        "type": "nominal",
+        "worksheet": "test_worksheet",
+        "provenance": "XML"
+      },
+      {
+        "column": "[Sales Amount]",
+        "derivation": "Sum",
+        "name": "[sum:Sales Amount:qk]",
+        "pivot": "key",
+        "type": "quantitative",
+        "worksheet": "test_worksheet",
+        "provenance": "XML"
+      },
+      {
+        "column": "[State]",
+        "derivation": "None",
+        "name": "[none:State:nk]",
+        "pivot": "key",
+        "type": "nominal",
+        "worksheet": "test_worksheet",
+        "provenance": "XML"
+      },
+      {
+        "column": "[Store Type]",
+        "derivation": "None",
+        "name": "[none:Store Type:nk]",
+        "pivot": "key",
+        "type": "nominal",
+        "worksheet": "test_worksheet",
         "provenance": "XML"
       }
     ]

@@ -367,9 +367,11 @@ test('Phase 03 Report - 22-Row 3-Column Correspondence Structure and Source Valu
     // Verify source values accuracy
     assert.ok(content.includes('"validation"'), 'Report must include runtime dashboard name "validation"');
     assert.ok(content.includes('"test_worksheet"'), 'Report must include runtime worksheet name "test_worksheet"');
+    assert.ok(content.includes('10 dashboards present; "validation" present'), 'Report must verify canonical dashboard presence');
+    assert.ok(content.includes('91 worksheets present; "test_worksheet" present'), 'Report must verify canonical worksheet presence');
     assert.ok(content.includes('150 rows'), 'Report must include evaluated row count of 150 rows');
     assert.ok(content.includes('282 canonical fields'), 'Report must include TWB canonical field count of 282');
-    assert.ok(content.includes('1074 column-instance'), 'Report must include TWB column instance count of 1074');
+    assert.ok(content.includes('1080 column-instance'), 'Report must include TWB column instance count of 1080');
     assert.ok(content.includes('federated.0yylszc1nyju5o130dues14408ct'), 'Report must include datasource ID federated.0yylszc1nyju5o130dues14408ct');
 
     // Verify explicit missing value annotations
