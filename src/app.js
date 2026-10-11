@@ -5,6 +5,7 @@
  */
 import { Extractor } from "./tableau/extractor.js";
 import { EvidenceCollector } from "./tableau/evidence_collector.js";
+import { runSummaryApiDiagnostic } from "./tableau/summary_api_diagnostic.js";
 
 // Expose EvidenceCollector on window for runtime testing and validation access
 if (typeof window !== "undefined") {
@@ -187,6 +188,16 @@ document.addEventListener("DOMContentLoaded", () => {
                                 }, 'phase03_evidence.json');
                             } catch (exportErr) {
                                 console.error("[Phase 03 Evidence] Error exporting evidence:", exportErr);
+                            }
+
+                            // TEMPORARY DIAGNOSTIC CODE
+                            // Run diagnostic asynchronously and independently without blocking initialization
+                            try {
+                                runSummaryApiDiagnostic(targetWorksheet, dashboardName).catch(diagErr => {
+                                    console.error("[Summary API Diagnostic] Diagnostic execution failed:", diagErr);
+                                });
+                            } catch (diagLauncherErr) {
+                                console.error("[Summary API Diagnostic] Failed to launch diagnostic:", diagLauncherErr);
                             }
                         } catch (extractErr) {
                             const extractErrMsg = extractErr && extractErr.message ? extractErr.message : String(extractErr);
